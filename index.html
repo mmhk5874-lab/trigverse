@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#2b0e04" id="meta-theme-color" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="TrigVerse" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>TrigVerse — Complete Interactive Trigonometry Quest</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Outfit:wght@700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX Math Typesetting -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=35" />
+</head>
+<body>
+  <!-- ====================================================================
+        Luminous Orange Background + Live Floating Mathematics Display
+       ==================================================================== -->
+  <div class="math-bg-layer" id="math-bg-layer" aria-hidden="true">
+    <!-- Large Geometric SVG Maths Blueprints (Unit Circle, Sine Wave, Right Triangle) -->
+    <svg class="math-bg-svg svg-unit-circle" viewBox="0 0 260 260" fill="none">
+      <circle cx="130" cy="130" r="95" stroke="currentColor" stroke-width="2" stroke-dasharray="6 5" />
+      <line x1="15" y1="130" x2="245" y2="130" stroke="currentColor" stroke-width="1.6" />
+      <line x1="130" y1="15" x2="130" y2="245" stroke="currentColor" stroke-width="1.6" />
+      <line x1="130" y1="130" x2="197" y2="63" stroke="currentColor" stroke-width="2.5" />
+      <line x1="197" y1="63" x2="197" y2="130" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 3" />
+      <path d="M 162 130 A 32 32 0 0 0 153 107" stroke="currentColor" stroke-width="2" />
+      <circle cx="197" cy="63" r="4.5" fill="currentColor" />
+      <text x="166" y="120" fill="currentColor" font-size="14" font-family="serif" font-style="italic">θ</text>
+      <text x="198" y="54" fill="currentColor" font-size="12" font-family="monospace">P(cos θ, sin θ)</text>
+    </svg>
+
+    <svg class="math-bg-svg svg-right-tri" viewBox="0 0 240 190" fill="none">
+      <polygon points="30,155 200,155 200,35" stroke="currentColor" stroke-width="2.4" fill="none" />
+      <polyline points="182,155 182,137 200,137" stroke="currentColor" stroke-width="1.8" />
+      <path d="M 68 155 A 38 38 0 0 0 61 133" stroke="currentColor" stroke-width="2" />
+      <text x="74" y="148" fill="currentColor" font-size="15" font-family="serif" font-style="italic">θ</text>
+      <text x="102" y="84" fill="currentColor" font-size="13" font-family="monospace">H = √(P²+B²)</text>
+      <text x="206" y="102" fill="currentColor" font-size="13" font-family="monospace">P</text>
+      <text x="110" y="174" fill="currentColor" font-size="13" font-family="monospace">B</text>
+    </svg>
+
+    <svg class="math-bg-svg svg-sine-wave" viewBox="0 0 420 120" fill="none">
+      <line x1="10" y1="60" x2="410" y2="60" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 5" />
+      <path d="M 10 60 Q 60 5, 110 60 T 210 60 T 310 60 T 410 60" stroke="currentColor" stroke-width="2.4" fill="none" />
+      <path d="M 10 20 Q 60 60, 110 100 T 210 20 T 310 100 T 410 20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" fill="none" />
+      <text x="22" y="22" fill="currentColor" font-size="12" font-family="monospace">y = A sin(ωx + φ)</text>
+    </svg>
+
+    <div id="math-floating-formulas"></div>
+  </div>
+
+  <!-- ====================================================================
+       Top Navigation Bar
+       ==================================================================== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Curriculum Menu" hidden aria-hidden="true">☰</button>
+      <button type="button" class="mobile-back-chip" id="mobile-back-btn" hidden aria-label="Back to Quest Roadmap">← Map</button>
+      <div class="brand" id="brand-home">
+        <div class="brand-logo-wrap">
+          <img src="logo.png" alt="TrigVerse Crest Logo" class="brand-logo-img" />
+        </div>
+        <div class="brand-text-col">
+          <span class="brand-title trigverse-aura">TrigVerse</span>
+          <span class="brand-subtitle">Foundations → Advanced Trigonometry</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs" aria-label="Primary Sections">
+      <button class="nav-tab active" data-view="roadmap">🗺️ Quest Roadmap</button>
+      <button class="nav-tab" data-view="vault">📜 Formulas</button>
+      <button class="nav-tab" data-view="lectures">🎓 Lectures (EN / اردو)</button>
+      <button class="nav-tab" data-view="playground">🔬 Interactive Labs (14)</button>
+      <button class="nav-tab" data-view="solver">📐 Calculator &amp; Solver</button>
+    </nav>
+
+    <div class="topbar-right">
+      <div class="mobile-topbar-stats" id="mobile-topbar-stats" aria-label="Player Quick Stats">
+        <span class="mobile-stat-chip" title="Current Chapter Level">🛡️ <b id="mob-hud-level">Lv. 1</b></span>
+      </div>
+      <button type="button" class="pwa-install-chip" id="pwa-install-btn" hidden title="Install TrigVerse Mobile App">📲 App</button>
+      <div class="progress-pill" title="Your saved mastery progress" hidden aria-hidden="true">
+        <span id="progress-text">0/44 Mastered (0%)</span>
+        <div class="progress-bar-mini">
+          <div class="progress-bar-mini-fill" id="progress-bar-fill"></div>
+        </div>
+      </div>
+      <button class="icon-btn" id="theme-toggle-btn" title="Switch Dark / Light Theme" aria-label="Switch Dark or Light Theme">☀️</button>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       Main Application Shell (Sidebar + Views)
+       ==================================================================== -->
+  <div class="app-shell">
+    <!-- Persistent Trigonometry Curriculum State Mount (Visually Hidden, Work Preserved) -->
+    <aside class="sidebar" id="sidebar" hidden aria-hidden="true">
+      <div class="sidebar-search">
+        <span class="sidebar-search-icon">🔍</span>
+        <input type="text" id="sidebar-search-input" placeholder="Search topic, identity, Euler, Fourier..." />
+      </div>
+      <div id="sidebar-curriculum"></div>
+    </aside>
+
+    <!-- Main Dynamic Viewport -->
+    <main class="main-content">
+
+      <!-- VIEW 1: ROADMAP OVERVIEW -->
+      <section class="view-panel active" id="view-roadmap">
+        <div class="hero-banner">
+          <div>
+            <span class="hero-eyebrow">Interactive Trigonometry Adventure &amp; Curriculum</span>
+            <div class="hero-aura-heading">
+              <span class="trigverse-aura hero-trigverse-display">TrigVerse</span>
+            </div>
+          </div>
+
+          <div class="hero-crest-panel">
+            <div class="hero-logo-orb">
+              <img src="logo.png" alt="TrigVerse Official Emblem" class="hero-logo-img" />
+            </div>
+            <div class="trigverse-aura hero-emblem-caption">TrigVerse</div>
+            <div class="hero-stats">
+              <div class="stat-card">
+                <div class="stat-value">7</div>
+                <div class="stat-label">Quest Realms</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">44</div>
+                <div class="stat-label">Chapters + Summary</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">14</div>
+                <div class="stat-label">Live Canvas Labs</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-completed">0/44</div>
+                <div class="stat-label">Chapters Mastered</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 🎮 GAME-TYPE ORANGE AURA QUEST WORLD ROADMAP -->
+        <div class="duo-quest-wrapper" id="duo-quest-wrapper">
+          <div class="duo-hud-bar">
+            <div class="duo-hud-items">
+              <div class="duo-hud-chip" title="Current Chapter Level">
+                <span class="duo-hud-icon">🛡️</span>
+                <span id="hud-level">Lv. 1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Winding S-Curve Game Board Path Decorated by Logo Animals -->
+          <div class="duo-path-arena" id="duo-path-arena"></div>
+
+          <!-- Optional Classic Grid View -->
+          <div class="roadmap-grid" id="roadmap-grid" style="display:none;margin-top:1.25rem;"></div>
+
+          <!-- Floating Jump-to-Current Button -->
+          <button class="duo-jump-fab" id="btn-jump-active" title="Teleport to Active Hero Stone">🎯</button>
+        </div>
+
+        <!-- ⚔️ PLAYABLE GUARDIAN BOSS BATTLE ARENA MODAL -->
+        <div class="rpg-modal-backdrop" id="rpg-battle-modal" hidden>
+          <div class="rpg-battle-arena" role="dialog" aria-modal="true" aria-labelledby="rpg-boss-name">
+            <div class="rpg-battle-topbar">
+              <span class="rpg-battle-badge" id="rpg-battle-stage-tag">⚔️ GUARDIAN RAID</span>
+              <div class="rpg-combo-pill" id="rpg-battle-combo">🔥 Combo x1</div>
+              <button type="button" class="rpg-close-btn" id="btn-close-battle" aria-label="Retreat from Battle">✕ Retreat</button>
+            </div>
+
+            <div class="rpg-combatants-row">
+              <!-- Player Side -->
+              <div class="rpg-fighter-box player-side">
+                <img src="animals/tiger.png" alt="Player Companion" class="rpg-fighter-img" id="rpg-player-battle-img" />
+                <div class="rpg-fighter-info">
+                  <div class="rpg-fighter-name" id="rpg-player-battle-name">Hero &amp; Tiger</div>
+                  <div class="rpg-hearts-bar" id="rpg-battle-hearts">❤️ ❤️ ❤️</div>
+                </div>
+              </div>
+
+              <div class="rpg-vs-emblem">VS</div>
+
+              <!-- Guardian Boss Side -->
+              <div class="rpg-fighter-box boss-side" id="rpg-boss-box">
+                <div class="rpg-fighter-info" style="text-align:right;">
+                  <div class="rpg-fighter-name" id="rpg-boss-name">Ember Ant Boss</div>
+                  <div class="rpg-hp-track">
+                    <div class="rpg-hp-fill" id="rpg-boss-hp-fill" style="width:100%"></div>
+                  </div>
+                  <div class="rpg-hp-text" id="rpg-boss-hp-text">HP 100 / 100</div>
+                </div>
+                <img src="animals/ant.png" alt="Guardian Boss" class="rpg-fighter-img boss-glow" id="rpg-boss-img" />
+              </div>
+            </div>
+
+            <!-- Speed Bonus Timer Strip -->
+            <div class="rpg-timer-track" title="Answer fast for Critical Speed Bonus!">
+              <div class="rpg-timer-fill" id="rpg-timer-fill" style="width:100%"></div>
+            </div>
+
+            <!-- Question & Attack Spell Options -->
+            <div class="rpg-battle-body" id="rpg-battle-body"></div>
+          </div>
+        </div>
+
+        <!-- Floating Loot / XP Toast Container -->
+        <div class="rpg-toast-stack" id="rpg-toast-stack"></div>
+      </section>
+
+      <!-- VIEW 2: ACTIVE LESSON -->
+      <section class="view-panel" id="view-lesson">
+        <div id="lesson-container"></div>
+      </section>
+
+      <!-- VIEW 3: INTERACTIVE VISUAL LABS HUB -->
+      <section class="view-panel" id="view-playground">
+        <div class="section-card">
+          <h2>🔬 Interactive Trigonometry Visual Sandboxes</h2>
+          <p style="margin-top:0">
+            Experiment freely with all 14 interactive simulators—from measuring angles with a protractor to compound/multiple angles, general equation roots, inverse graphs &amp; properties, and Fourier harmonics:
+          </p>
+          <div class="lab-selector-bar" id="hub-lab-bar"></div>
+          <div id="hub-sandbox-mount"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: CALCULATOR & TRIANGLE SOLVER -->
+      <section class="view-panel" id="view-solver">
+        <div class="section-card">
+          <h2>🧮 Exact &amp; High-Precision Trigonometric Angle Evaluator</h2>
+          <p style="margin-top:0">
+            Enter any positive or negative angle in Degrees, Radians, or Gradians to evaluate all six trigonometric ratios instantly:
+          </p>
+          <div class="sandbox-controls" style="margin-top:0.5rem;">
+            <div class="control-group">
+              <label for="calc-angle-val">Input Angle Value</label>
+              <input type="number" id="calc-angle-val" value="150" step="any" />
+            </div>
+            <div class="control-group">
+              <label for="calc-angle-unit">Angle Unit</label>
+              <select id="calc-angle-unit">
+                <option value="deg">Degrees (°)</option>
+                <option value="rad">Radians (rad)</option>
+                <option value="grad">Gradians (gon)</option>
+              </select>
+            </div>
+          </div>
+          <div id="calc-angle-output"></div>
+        </div>
+
+        <div class="section-card">
+          <h2>🔄 Inverse Principal Value, Domain/Range &amp; General Trig Equation Solver</h2>
+          <p style="margin-top:0">
+            Select any inverse trigonometric function and enter $x$: checks exact <strong>Domain &amp; Principal Range</strong>, identifies exact $\pi$-fractions, and solves the companion trigonometric equation for both <strong>Principal Solutions in $[0^\circ, 360^\circ)$</strong> and the <strong>General Solution ($n \in \mathbb{Z}$)</strong>!
+          </p>
+          <div class="sandbox-controls" style="margin-top:0.5rem;">
+            <div class="control-group">
+              <label for="inv-eq-fn">Inverse Function &amp; Companion Equation</label>
+              <select id="inv-eq-fn">
+                <option value="asin">sin⁻¹(x)  &amp;  Solve sin θ = x</option>
+                <option value="acos">cos⁻¹(x)  &amp;  Solve cos θ = x</option>
+                <option value="atan">tan⁻¹(x)  &amp;  Solve tan θ = x</option>
+                <option value="acot">cot⁻¹(x)  &amp;  Solve cot θ = x</option>
+                <option value="asec">sec⁻¹(x)  &amp;  Solve sec θ = x</option>
+                <option value="acsc">cosec⁻¹(x) &amp; Solve cosec θ = x</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="inv-eq-val">Input Value x (e.g. -0.5, 0.7071068, 1, -1.73205)</label>
+              <input type="number" id="inv-eq-val" value="-0.5" step="any" />
+            </div>
+          </div>
+          <div id="inv-eq-output"></div>
+        </div>
+
+        <div class="section-card">
+          <h2>🧪 Simplification of Expressions &amp; Proof of Identities Workbench</h2>
+          <p style="margin-top:0">
+            Select a classic <strong>Trigonometric or Inverse Trigonometric Simplification / Identity Proof</strong> problem, test any numerical input $x$ to watch $\text{LHS}(x) \equiv \text{RHS}(x)$ match to $8$ decimal places, and inspect the complete step-by-step algebraic derivation:
+          </p>
+          <div class="sandbox-controls" style="margin-top:0.5rem;">
+            <div class="control-group">
+              <label for="proof-preset-select">Simplification / Identity Proof Blueprint</label>
+              <select id="proof-preset-select">
+                <option value="0">1. [Simplification • Core] (sin⁴θ − cos⁴θ)/(sin²θ − cos²θ) ≡ 1</option>
+                <option value="1">2. [Simplification • Multi-Angle] (sin θ + sin 2θ)/(1 + cos θ + cos 2θ) ≡ tan θ</option>
+                <option value="2">3. [Simplification • Inverse Radical] tan⁻¹((√(1+x²) − 1)/x) ≡ ½ tan⁻¹(x)</option>
+                <option value="3">4. [Simplification • Inverse Phase] tan⁻¹((cos x − sin x)/(cos x + sin x)) ≡ π/4 − x</option>
+                <option value="4">5. [Proof • Core Identity] tan²θ − sin²θ ≡ tan²θ · sin²θ</option>
+                <option value="5">6. [Proof • Split-Angle Gem] tan 3x − tan 2x − tan x ≡ tan 3x · tan 2x · tan x</option>
+                <option value="6">7. [Proof • Phase-Shifted Squares] cos²x + cos²(x + π/3) + cos²(x − π/3) ≡ 3/2</option>
+                <option value="7">8. [Proof • Inverse Range-Bounded] 2 tan⁻¹(x) ≡ cos⁻¹((1 − x²)/(1 + x²))  (for x ≥ 0)</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="proof-test-x" id="lbl-proof-test-x">Test Input Value (θ in Degrees or x Real)</label>
+              <input type="number" id="proof-test-x" value="25" step="0.05" />
+            </div>
+          </div>
+          <div id="proof-workbench-output"></div>
+        </div>
+
+        <div class="section-card">
+          <h2>📐 Universal Triangle Solver (Law of Cosines, Law of Sines &amp; Heron's Area)</h2>
+          <p style="margin-top:0">
+            Solve any valid right or oblique triangle $\triangle ABC$ and inspect its live scale drawing, area $\Delta$, circumradius $R$, and inradius $r$:
+          </p>
+          <div class="solver-grid">
+            <div>
+              <div class="sandbox-controls" style="grid-template-columns:minmax(0,1fr);margin-top:0;">
+                <div class="control-group">
+                  <label for="tri-mode">Known Measurements Mode</label>
+                  <select id="tri-mode">
+                    <option value="SSS">SSS — Three Sides (a, b, c)</option>
+                    <option value="SAS">SAS — Two Sides &amp; Included Angle (a, C°, b)</option>
+                    <option value="ASA">ASA — Two Angles &amp; Included Side (A°, c, B°)</option>
+                  </select>
+                </div>
+                <div class="control-group">
+                  <label id="lbl-tri-1" for="tri-v1">Side a</label>
+                  <input type="number" id="tri-v1" value="5" step="0.1" min="0.1" />
+                </div>
+                <div class="control-group">
+                  <label id="lbl-tri-2" for="tri-v2">Side b</label>
+                  <input type="number" id="tri-v2" value="6" step="0.1" min="0.1" />
+                </div>
+                <div class="control-group">
+                  <label id="lbl-tri-3" for="tri-v3">Side c</label>
+                  <input type="number" id="tri-v3" value="7" step="0.1" min="0.1" />
+                </div>
+              </div>
+            </div>
+            <div>
+              <canvas class="canvas-stage" id="tri-solver-canvas"></canvas>
+            </div>
+          </div>
+          <div id="tri-solver-output"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: MASTER FORMULA CATEGORY (BEGINNING TO END: CH 1 -> CH 44) -->
+      <section class="view-panel" id="view-vault">
+        <div class="vault-codex-hero">
+          <div class="vault-codex-hero-main">
+            <div class="vault-codex-emblem" aria-hidden="true">
+              <svg viewBox="0 0 64 64" fill="none">
+                <circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3" opacity="0.65" />
+                <polygon points="16,46 48,46 48,18" stroke="currentColor" stroke-width="2.5" fill="rgba(251,191,36,0.14)" />
+                <polyline points="41,46 41,39 48,39" stroke="currentColor" stroke-width="1.8" />
+                <circle cx="48" cy="18" r="3.2" fill="#fde047" />
+              </svg>
+            </div>
+            <div class="vault-codex-copy">
+              <span class="hero-eyebrow">📜 Complete Formula Codex • Beginning → End (Ch 1 – Ch 44)</span>
+              <h2 class="vault-codex-title">Master Trigonometry <span class="trigverse-aura">Formula Vault</span></h2>
+              <p class="vault-codex-sub">
+                Every right-triangle ratio (<strong>Perpendicular, Base, Hypotenuse</strong>), standard-angle table, identity, wave law, multi-angle transform, general solution, oblique-triangle theorem, inverse branch, calculus rule, and Fourier expansion in crystal-clear sequence.
+              </p>
+            </div>
+          </div>
+          <div class="vault-hero-meta">
+            <span class="vault-count-pill" id="vault-count-badge">73 Formula Cards • 12 Sections</span>
+            <button type="button" class="btn btn-secondary vault-fold-btn" id="vault-fold-all-btn">↕ Collapse All</button>
+            <button type="button" class="btn btn-secondary vault-reset-btn" id="vault-reset-btn" hidden>↺ Reset</button>
+          </div>
+        </div>
+
+        <div class="vault-command-dock">
+          <div class="formula-filter-bar vault-filter-row">
+            <div class="vault-search-wrap">
+              <span class="vault-search-icon" aria-hidden="true">🔎</span>
+              <input type="search" id="vault-search" placeholder="Search formula, chapter, or symbol (e.g. Base, Radian, ASTC, 3A, Sine Rule, tan⁻¹)..." />
+            </div>
+            <select id="vault-grade-filter" class="vault-chapter-select" aria-label="Filter formulas by chapter">
+              <option value="ALL">📚 All 44 Chapters</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="vault-sticky-rail-wrap">
+          <div class="lab-selector-bar vault-sec-rail" id="vault-section-filter" aria-label="Filter formulas by section"></div>
+        </div>
+
+        <div class="vault-sections-container" id="vault-grid"></div>
+      </section>
+
+      <!-- VIEW 6 (LAST TAB): COMPLETE 4-STAGE MASTER SUMMARY -->
+      <section class="view-panel" id="view-summary">
+        <div class="section-card">
+          <div class="master-summary-hero" style="margin-bottom:1.15rem;">
+            <div class="master-summary-title-row">
+              <img src="logo.png" alt="TrigVerse Summit Crest" class="master-summary-crest" />
+              <div>
+                <span class="quick-syllabus-badge">🏆 Complete 4-Stage Trigonometry Synthesis</span>
+                <h2 style="margin:0.35rem 0 0.2rem;"><span class="trigverse-aura">TrigVerse</span> Master Summary (All 41 Numbered Syllabus Pillars)</h2>
+                <p style="margin:0;color:var(--text-secondary);font-size:0.92rem;">
+                  Filter by syllabus stage or search any topic, formula, or exam rule—and jump straight into any chapter with one click:
+                </p>
+              </div>
+            </div>
+            <button class="btn btn-primary" type="button" id="btn-summary-tab-ch44">📖 Take Ch 44 Final Synthesis Quiz →</button>
+          </div>
+
+          <div class="formula-filter-bar">
+            <input type="text" id="summary-search-input" placeholder="Search summary pillars (e.g. Complementary, Compound, Principal Values, Simplification, Proof, General Solutions)..." />
+            <div class="lab-selector-bar" id="summary-stage-filter" style="margin-bottom:0;">
+              <button class="lab-pill active" type="button" data-stage="ALL">All 4 Groups (41)</button>
+              <button class="lab-pill" type="button" data-stage="stage-1">Group I: Right-Triangle Foundations (1–9)</button>
+              <button class="lab-pill" type="button" data-stage="stage-2">Group II: Identities, Proofs &amp; Heights (1–7)</button>
+              <button class="lab-pill" type="button" data-stage="stage-3">Group III: Circular &amp; Multi-Angle Analytics (1–16)</button>
+              <button class="lab-pill" type="button" data-stage="stage-4">Group IV: Inverse Trig &amp; Equations (1–9)</button>
+            </div>
+          </div>
+
+          <div id="master-summary-mount"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 7: BILINGUAL LECTURE ACADEMY (100 ENGLISH + 100 URDU/HINDI YOUTUBE LECTURES) -->
+      <section class="view-panel" id="view-lectures">
+        <div class="section-card">
+          <div class="lectures-hero-head">
+            <div>
+              <span class="hero-eyebrow">🎓▶️ 200 YouTube Video Lecture Library • 100 English + 100 Urdu &amp; Hindi</span>
+              <h2 style="margin:0.2rem 0 0.35rem;">100 English + 100 Urdu &amp; Hindi YouTube Lectures &amp; Bilingual Notes</h2>
+              <p style="margin:0;color:var(--text-secondary);">
+                Explore <strong>200 curated YouTube Trigonometry Video Lectures</strong>—<strong>100 in English</strong> and <strong>100 in Urdu + Hindi</strong>—playable directly inside the page or on YouTube, plus complete Chalkboard derivations and Voice Narration across all 7 Levels!
+              </p>
+            </div>
+            <div class="lecture-global-controls">
+              <div class="lecture-lang-bar" id="lecture-hub-lang-bar" role="group" aria-label="Lecture Language Display">
+                <button type="button" class="lecture-lang-pill active" data-lang-mode="en">🇬🇧 100 English Videos</button>
+                <button type="button" class="lecture-lang-pill" data-lang-mode="ur">🇵🇰🇮🇳 100 Urdu + Hindi</button>
+              </div>
+              <div class="lecture-audio-bar">
+                <label for="lecture-voice-rate" style="font-size:0.78rem;font-weight:700;color:var(--text-secondary);">🔊 Speed:</label>
+                <select id="lecture-voice-rate" class="lecture-rate-select">
+                  <option value="0.85">0.85× Clear</option>
+                  <option value="1" selected>1.0× Normal</option>
+                  <option value="1.2">1.2× Fast</option>
+                </select>
+                <button type="button" class="lecture-stop-btn" id="btn-stop-lecture-voice">⏹ Stop Audio</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="formula-filter-bar" style="margin-top:1rem;">
+            <input type="text" id="lectures-search-input" placeholder="Search lectures in English or اردو (e.g. Radian, ریڈین, Identities, متماثلات, Inverse, معکوس)..." />
+            <div class="lab-selector-bar" id="lectures-level-filter" style="margin-bottom:0;">
+              <button class="lab-pill active" type="button" data-lec-tier="ALL">All 7 Realms (7 + 44)</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-1">Realm 1: Angle Genesis</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-2">Realm 2: Ratio Forge</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-3">Realm 3: Identity Citadel</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-4">Realm 4: Wave Observatory</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-5">Realm 5: Multi-Angle Arena</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-6">Realm 6: Inverse &amp; Calculus</button>
+              <button class="lab-pill" type="button" data-lec-tier="tier-7">Realm 7: Master Synthesis</button>
+            </div>
+          </div>
+
+          <div id="lectures-youtube-spotlight"></div>
+          <div id="lectures-yt200-library-mount"></div>
+          <div id="lectures-realms-mount"></div>
+          <div id="lectures-chapters-mount" style="margin-top:1.5rem;"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Quick Return-to-Top Pill on Mobile Long Scrolls -->
+  <button type="button" class="mobile-scroll-top-btn" id="mobile-scroll-top-btn" hidden aria-label="Scroll back to top">↑ Top</button>
+
+  <!-- ====================================================================
+       Native Mobile Bottom Tab Navigation Bar (Thumb-Zone Ergonomics)
+       ==================================================================== -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile Primary Navigation">
+    <button type="button" class="mobile-nav-btn active" data-view="roadmap">
+      <span class="mobile-nav-icon" aria-hidden="true">🗺️</span>
+      <span class="mobile-nav-label">Quest</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="vault">
+      <span class="mobile-nav-icon" aria-hidden="true">📜</span>
+      <span class="mobile-nav-label">Formulas</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="lectures">
+      <span class="mobile-nav-icon" aria-hidden="true">🎓</span>
+      <span class="mobile-nav-label">Lectures</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="playground">
+      <span class="mobile-nav-icon" aria-hidden="true">🔬</span>
+      <span class="mobile-nav-label">14 Labs</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-view="solver">
+      <span class="mobile-nav-icon" aria-hidden="true">📐</span>
+      <span class="mobile-nav-label">Solver</span>
+    </button>
+  </nav>
+
+  <!-- Application Scripts (defer preserves execution order right after KaTeX defer scripts!) -->
+  <script defer src="curriculum-ch1-5.js?v=35"></script>
+  <script defer src="curriculum-ch6-10.js?v=35"></script>
+  <script defer src="curriculum-ultra7.js?v=35"></script>
+  <script defer src="curriculum-class11a.js?v=35"></script>
+  <script defer src="curriculum-class11b-12.js?v=35"></script>
+  <script defer src="curriculum-class12-inverse-eq.js?v=35"></script>
+  <script defer src="curriculum-part2.js?v=35"></script>
+  <script defer src="formulas-complete.js?v=35"></script>
+  <script defer src="curriculum-master-summary.js?v=35"></script>
+  <script defer src="lectures-bilingual.js?v=35"></script>
+  <script defer src="youtube-200-library.js?v=35"></script>
+  <script defer src="visualizers.js?v=35"></script>
+  <script defer src="mcq-generator.js?v=35"></script>
+  <script defer src="app.js?v=35"></script>
+</body>
+</html>
