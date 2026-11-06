@@ -1700,42 +1700,190 @@
   }
 
   /* ------------------------------------------------------------------------
-     Exact & Decimal Angle Evaluator + Any-Triangle Solver
+     Scientific Handheld Calculators, CAS Workbench & Graphing Triangle Solver
      ------------------------------------------------------------------------ */
+  let activeTrigFocus = "sin";
+  let freshAngleEntry = true;
+  let freshInvEntry = true;
+  let activeTriSlotId = "tri-v1";
+  let freshTriEntry = true;
+
+  function parseCalcNumber(str, fallback = 0) {
+    if (typeof str !== "string") return fallback;
+    const cleaned = str.trim().replace(/−/g, "-");
+    if (!cleaned || cleaned === "-" || cleaned === "." || cleaned === "-.") return fallback;
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : fallback;
+  }
+
+  function getExactTrigMap(deg) {
+    const normRaw = ((deg % 360) + 360) % 360;
+    const nearest15 = Math.round(normRaw / 15) * 15;
+    if (Math.abs(normRaw - nearest15) > 1e-4 && Math.abs(normRaw - 360) > 1e-4) return null;
+    const k = nearest15 % 360;
+
+    if (k === 0) return { sin: "0", cos: "1", tan: "0", csc: "Undefined", sec: "1", cot: "Undefined" };
+    if (k === 90) return { sin: "1", cos: "0", tan: "Undefined", csc: "1", sec: "Undefined", cot: "0" };
+    if (k === 180) return { sin: "0", cos: "−1", tan: "0", csc: "Undefined", sec: "−1", cot: "Undefined" };
+    if (k === 270) return { sin: "−1", cos: "0", tan: "Undefined", csc: "−1", sec: "Undefined", cot: "0" };
+
+    let ref = k;
+    let sSign = "", cSign = "", tSign = "";
+    if (k > 90 && k < 180) {
+      ref = 180 - k; cSign = "−"; tSign = "−";
+    } else if (k > 180 && k < 270) {
+      ref = k - 180; sSign = "−"; cSign = "−";
+    } else if (k > 270) {
+      ref = 360 - k; sSign = "−"; tSign = "−";
+    }
+
+    const base = {
+      15: { sin: "(√6−√2)/4", cos: "(√6+√2)/4", tan: "2−√3", csc: "√6+√2", sec: "√6−√2", cot: "2+√3" },
+      30: { sin: "1/2", cos: "√3/2", tan: "1/√3", csc: "2", sec: "2/√3", cot: "√3" },
+      45: { sin: "√2/2", cos: "√2/2", tan: "1", csc: "√2", sec: "√2", cot: "1" },
+      60: { sin: "√3/2", cos: "1/2", tan: "√3", csc: "2/√3", sec: "2", cot: "1/√3" },
+      75: { sin: "(√6+√2)/4", cos: "(√6−√2)/4", tan: "2+√3", csc: "√6−√2", sec: "√6+√2", cot: "2−√3" }
+    }[ref];
+    if (!base) return null;
+
+    const applySign = (sg, expr) => {
+      if (!sg) return expr;
+      const needsParens = (expr.includes("+") || expr.includes("−")) && !expr.startsWith("(");
+      return needsParens ? `−(${expr})` : `−${expr}`;
+    };
+
+    return {
+      sin: applySign(sSign, base.sin),
+      cos: applySign(cSign, base.cos),
+      tan: applySign(tSign, base.tan),
+      csc: applySign(sSign, base.csc),
+      sec: applySign(cSign, base.sec),
+      cot: applySign(tSign, base.cot)
+    };
+  }
+
+  function getQuadrantLabel(deg) {
+    const norm = ((deg % 360) + 360) % 360;
+    const fmt = Number.isInteger(Number(norm.toFixed(2))) ? norm.toFixed(0) : norm.toFixed(1);
+    if (Math.abs(norm) < 1e-5 || Math.abs(norm - 360) < 1e-5) return `+X Axis • 0°`;
+    if (Math.abs(norm - 90) < 1e-5) return `+Y Axis • 90°`;
+    if (Math.abs(norm - 180) < 1e-5) return `−X Axis • 180°`;
+    if (Math.abs(norm - 270) < 1e-5) return `−Y Axis • 270°`;
+    if (norm < 90) return `Q I (All +) • ${fmt}°`;
+    if (norm < 180) return `Q II (sin +) • ${fmt}°`;
+    if (norm < 270) return `Q III (tan +) • ${fmt}°`;
+    return `Q IV (cos +) • ${fmt}°`;
+  }
+
+  function syncAngleCalculatorPresetLabels(unit) {
+    const presetRow = document.getElementById("calc-angle-preset-row");
+    if (presetRow) {
+      const radLabels = { 0: "0", 30: "π/6", 45: "π/4", 60: "π/3", 90: "π/2", 180: "π" };
+      const gradLabels = { 0: "0g", 30: "33.3g", 45: "50g", 60: "66.7g", 90: "100g", 180: "200g" };
+      presetRow.querySelectorAll("[data-angle-deg]").forEach((btn) => {
+        const d = Number(btn.dataset.angleDeg);
+        btn.textContent = unit === "rad" ? radLabels[d] : unit === "grad" ? gradLabels[d] : `${d}°`;
+      });
+    }
+    document.querySelectorAll("#calc-device-angle [data-angle-step]").forEach((btn) => {
+      const d = Number(btn.dataset.angleStep);
+      const sign = d > 0 ? "+" : "−";
+      const ad = Math.abs(d);
+      if (unit === "rad") {
+        btn.textContent = `${sign}${ad === 15 ? "π/12" : "π/4"}`;
+      } else if (unit === "grad") {
+        btn.textContent = `${sign}${ad === 15 ? "16.7g" : "50g"}`;
+      } else {
+        btn.textContent = `${sign}${ad}°`;
+      }
+    });
+  }
+
   function runAngleEvaluator() {
     const valInput = document.getElementById("calc-angle-val");
     const unitSel = document.getElementById("calc-angle-unit");
     const outEl = document.getElementById("calc-angle-output");
     if (!valInput || !unitSel || !outEl) return;
 
-    const raw = Number(valInput.value || 0);
+    const raw = parseCalcNumber(valInput.value, 0);
     const unit = unitSel.value;
     const deg = unit === "deg" ? raw : unit === "rad" ? (raw * 180) / Math.PI : raw * 0.9;
     const rad = (deg * Math.PI) / 180;
+    const unitSym = unit === "deg" ? "°" : unit === "rad" ? " rad" : " gon";
+
+    // Sync LCD header indicators & keypad mode buttons
+    const unitTag = document.getElementById("calc-lcd-unit-tag");
+    if (unitTag) unitTag.textContent = unit === "deg" ? "°" : unit === "rad" ? "rad" : "gon";
+    const quadEl = document.getElementById("calc-lcd-quad");
+    if (quadEl) quadEl.textContent = getQuadrantLabel(deg);
+    document.querySelectorAll("#calc-lcd-unit-pills [data-lcd-u]").forEach((el) => {
+      el.classList.toggle("active", el.dataset.lcdU === unit);
+    });
+    document.querySelectorAll("#calc-device-angle [data-angle-unit]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.angleUnit === unit);
+    });
+    document.querySelectorAll("#calc-device-angle [data-trig-focus]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.trigFocus === activeTrigFocus);
+    });
+    syncAngleCalculatorPresetLabels(unit);
 
     const s = Math.sin(rad);
     const c = Math.cos(rad);
-    const t = Math.abs(c) < 1e-10 ? null : s / c;
+    const sinZero = Math.abs(s) < 1e-10;
+    const cosZero = Math.abs(c) < 1e-10;
+    const cleanZero = (v) => (Math.abs(v) < 1e-12 ? 0 : v);
+
+    const exactMap = getExactTrigMap(deg);
+    const ratios = [
+      { key: "sin", label: "sin θ", val: cleanZero(s).toFixed(6), exact: exactMap?.sin },
+      { key: "cos", label: "cos θ", val: cleanZero(c).toFixed(6), exact: exactMap?.cos },
+      { key: "tan", label: "tan θ", val: cosZero ? "Undefined" : cleanZero(s / c).toFixed(6), exact: exactMap?.tan },
+      { key: "csc", label: "csc θ", val: sinZero ? "Undefined" : cleanZero(1 / s).toFixed(6), exact: exactMap?.csc },
+      { key: "sec", label: "sec θ", val: cosZero ? "Undefined" : cleanZero(1 / c).toFixed(6), exact: exactMap?.sec },
+      { key: "cot", label: "cot θ", val: sinZero ? "Undefined" : cleanZero(c / s).toFixed(6), exact: exactMap?.cot }
+    ];
+
+    const focused = ratios.find((r) => r.key === activeTrigFocus) || ratios[0];
+    const spotlightEl = document.getElementById("calc-lcd-spotlight");
+    const rawDisp = Number.isInteger(raw) ? raw : Number(raw.toFixed(6));
+    if (spotlightEl) {
+      const exactChip =
+        focused.exact && focused.exact !== focused.val && focused.exact !== "Undefined"
+          ? `<span class="calc-lcd-exact-pill">EXACT: ${focused.exact}</span>`
+          : focused.exact
+          ? `<span class="calc-lcd-exact-pill">EXACT</span>`
+          : "";
+      spotlightEl.innerHTML = `
+        <div class="calc-lcd-spot-expr">${focused.key}(${rawDisp}${unitSym}) ${exactChip}</div>
+        <div class="calc-lcd-spot-val">${focused.val === "Undefined" ? "MATH ∞ (Undefined)" : focused.val}</div>
+      `;
+    }
 
     outEl.innerHTML = `
-      <div class="trig-table-wrap">
-        <table class="trig-table">
-          <thead>
-            <tr><th>sin θ</th><th>cos θ</th><th>tan θ</th><th>csc θ</th><th>sec θ</th><th>cot θ</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>${s.toFixed(6)}</td>
-              <td>${c.toFixed(6)}</td>
-              <td>${t === null ? "Undefined" : t.toFixed(6)}</td>
-              <td>${Math.abs(s) < 1e-10 ? "Undefined" : (1 / s).toFixed(6)}</td>
-              <td>${Math.abs(c) < 1e-10 ? "Undefined" : (1 / c).toFixed(6)}</td>
-              <td>${Math.abs(s) < 1e-10 ? "Undefined" : (c / s).toFixed(6)}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="calc-lcd-ratio-grid">
+        ${ratios
+          .map(
+            (r) => `
+          <button type="button" class="calc-lcd-cell ${r.key === activeTrigFocus ? "active" : ""}" data-lcd-pick="${r.key}">
+            <span class="calc-lcd-cell-top">
+              <span class="calc-lcd-cell-fn">${r.label}</span>
+              ${r.exact && r.exact !== "Undefined" ? `<span class="calc-lcd-cell-exact">${r.exact}</span>` : ""}
+            </span>
+            <span class="calc-lcd-cell-num ${r.val === "Undefined" ? "is-undef" : ""}">${r.val}</span>
+          </button>
+        `
+          )
+          .join("")}
       </div>
     `;
+
+    outEl.querySelectorAll("[data-lcd-pick]").forEach((cell) => {
+      cell.addEventListener("click", () => {
+        triggerHaptic(8);
+        activeTrigFocus = cell.dataset.lcdPick;
+        runAngleEvaluator();
+      });
+    });
   }
 
   const PI_FRACTIONS = [
@@ -1761,64 +1909,78 @@
     if (!fnSel || !valIn || !outEl) return;
 
     const fn = fnSel.value;
-    const x = Number(valIn.value || 0);
+    const x = parseCalcNumber(valIn.value, 0);
 
     const meta = {
-      asin: { name: "sin⁻¹(x)", eq: "sin θ = x", dom: "[−1, 1]", rng: "[−π/2, π/2]", fam: "Family A (Odd: −α for x < 0)", valid: Math.abs(x) <= 1 },
-      acos: { name: "cos⁻¹(x)", eq: "cos θ = x", dom: "[−1, 1]", rng: "[0, π]", fam: "Family B (π-Shift: π − α for x < 0)", valid: Math.abs(x) <= 1 },
-      atan: { name: "tan⁻¹(x)", eq: "tan θ = x", dom: "ℝ (−∞, ∞)", rng: "(−π/2, π/2)", fam: "Family A (Odd: −α for x < 0)", valid: true },
-      acot: { name: "cot⁻¹(x)", eq: "cot θ = x", dom: "ℝ (−∞, ∞)", rng: "(0, π)", fam: "Family B (π-Shift: π − α for x < 0)", valid: true },
-      asec: { name: "sec⁻¹(x)", eq: "sec θ = x", dom: "(−∞, −1] ∪ [1, ∞)", rng: "[0, π] \\ {π/2}", fam: "Family B (π-Shift: π − α for x < 0)", valid: Math.abs(x) >= 1 },
-      acsc: { name: "cosec⁻¹(x)", eq: "cosec θ = x", dom: "(−∞, −1] ∪ [1, ∞)", rng: "[−π/2, π/2] \\ {0}", fam: "Family A (Odd: −α for x < 0)", valid: Math.abs(x) >= 1 }
+      asin: { name: "sin⁻¹(x)", eq: "sin θ = x", dom: "[−1, 1]", rng: "[−π/2, π/2]", fam: "Odd (−α for x < 0)", valid: Math.abs(x) <= 1 + 1e-7 },
+      acos: { name: "cos⁻¹(x)", eq: "cos θ = x", dom: "[−1, 1]", rng: "[0, π]", fam: "π-Shift (π − α)", valid: Math.abs(x) <= 1 + 1e-7 },
+      atan: { name: "tan⁻¹(x)", eq: "tan θ = x", dom: "ℝ (−∞, ∞)", rng: "(−π/2, π/2)", fam: "Odd (−α for x < 0)", valid: true },
+      acot: { name: "cot⁻¹(x)", eq: "cot θ = x", dom: "ℝ (−∞, ∞)", rng: "(0, π)", fam: "π-Shift (π − α)", valid: true },
+      asec: { name: "sec⁻¹(x)", eq: "sec θ = x", dom: "|x| ≥ 1", rng: "[0, π] \\ {π/2}", fam: "π-Shift (π − α)", valid: Math.abs(x) >= 1 - 1e-7 },
+      acsc: { name: "csc⁻¹(x)", eq: "csc θ = x", dom: "|x| ≥ 1", rng: "[−π/2, π/2] \\ {0}", fam: "Odd (−α for x < 0)", valid: Math.abs(x) >= 1 - 1e-7 }
     }[fn];
+
+    const promptEl = document.getElementById("inv-lcd-prompt");
+    if (promptEl) promptEl.textContent = `${meta.name} • x =`;
+    const rangePill = document.getElementById("inv-lcd-range-pill");
+    if (rangePill) rangePill.textContent = meta.rng;
+    const domPill = document.getElementById("inv-lcd-dom-pill");
+    if (domPill) {
+      domPill.textContent = meta.valid ? `DOMAIN ${meta.dom} ✓` : `OUT OF DOMAIN ⚠`;
+      domPill.classList.toggle("is-err", !meta.valid);
+    }
+    document.querySelectorAll("#calc-device-inverse [data-inv-fn]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.invFn === fn);
+    });
 
     if (!meta.valid || Number.isNaN(x)) {
       outEl.innerHTML = `
-        <div class="callout callout-pitfall" style="margin-top:0.75rem;">
-          <div class="callout-title">⚠️ Domain Violation — No Real Principal Value or Real Equation Root!</div>
-          <div>Input <strong>x = ${x}</strong> lies outside the Domain <strong>${meta.dom}</strong> of <strong>${meta.name}</strong>, so <strong>${meta.eq}</strong> has <strong>0 real solutions</strong>!</div>
+        <div class="calc-lcd-error">
+          <div class="calc-lcd-error-title">⚠ MATH ERROR — DOMAIN VIOLATION</div>
+          <div>x = <strong>${x}</strong> is outside <strong>${meta.dom}</strong> for <strong>${meta.name}</strong> (${meta.eq} has 0 real roots).</div>
         </div>
       `;
       return;
     }
 
+    const clampedUnit = Math.min(1, Math.max(-1, x));
+    const clampedRecip = Math.min(1, Math.max(-1, 1 / x));
     let pv = 0;
-    if (fn === "asin") pv = Math.asin(x);
-    else if (fn === "acos") pv = Math.acos(x);
+    if (fn === "asin") pv = Math.asin(clampedUnit);
+    else if (fn === "acos") pv = Math.acos(clampedUnit);
     else if (fn === "atan") pv = Math.atan(x);
     else if (fn === "acot") pv = Math.PI / 2 - Math.atan(x);
-    else if (fn === "asec") pv = Math.acos(1 / x);
-    else if (fn === "acsc") pv = Math.asin(1 / x);
+    else if (fn === "asec") pv = Math.acos(clampedRecip);
+    else if (fn === "acsc") pv = Math.asin(clampedRecip);
 
     const pvDeg = (pv * 180) / Math.PI;
-    const hitPi = PI_FRACTIONS.find(([rad]) => Math.abs(pv - rad) < 1e-4);
+    const hitPi = PI_FRACTIONS.find(([rad]) => Math.abs(pv - rad) < 2e-4);
     const pvDisplay = hitPi ? hitPi[1] : `${pv.toFixed(5)} rad (${pvDeg.toFixed(2)}°)`;
 
-    // Build Principal Solutions in [0, 2pi) & General Solution for the equation
     let genSol = "";
     let prinList = [];
     if (fn === "asin" || fn === "acsc") {
-      const sVal = fn === "asin" ? x : 1 / x;
+      const sVal = fn === "asin" ? clampedUnit : clampedRecip;
       const a = Math.asin(sVal);
-      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 1e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
-      genSol = `θ = nπ + (−1)ⁿ · (${aStr}),  n ∈ ℤ`;
+      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 2e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
+      genSol = `θ = nπ + (−1)ⁿ·(${aStr}), n ∈ ℤ`;
       for (let n = -1; n <= 3; n++) {
         const r = n * Math.PI + (n % 2 === 0 ? 1 : -1) * a;
         if (r >= -1e-7 && r < 2 * Math.PI - 1e-7 && !prinList.some((u) => Math.abs(u - r) < 1e-4)) prinList.push(r);
       }
     } else if (fn === "acos" || fn === "asec") {
-      const cVal = fn === "acos" ? x : 1 / x;
+      const cVal = fn === "acos" ? clampedUnit : clampedRecip;
       const a = Math.acos(cVal);
-      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 1e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
-      genSol = `θ = 2nπ ± ${aStr},  n ∈ ℤ`;
+      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 2e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
+      genSol = `θ = 2nπ ± ${aStr}, n ∈ ℤ`;
       [a, 2 * Math.PI - a].forEach((r) => {
         const norm = ((r % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
         if (!prinList.some((u) => Math.abs(u - norm) < 1e-4)) prinList.push(norm);
       });
     } else {
       const a = fn === "atan" ? Math.atan(x) : Math.PI / 2 - Math.atan(x);
-      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 1e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
-      genSol = `θ = nπ + (${aStr}),  n ∈ ℤ`;
+      const aStr = (PI_FRACTIONS.find(([r]) => Math.abs(a - r) < 2e-4)?.[1].split(" ")[0]) || `${a.toFixed(4)}`;
+      genSol = `θ = nπ + (${aStr}), n ∈ ℤ`;
       for (let n = -1; n <= 3; n++) {
         const r = n * Math.PI + a;
         if (r >= -1e-7 && r < 2 * Math.PI - 1e-7 && !prinList.some((u) => Math.abs(u - r) < 1e-4)) prinList.push(r);
@@ -1827,16 +1989,23 @@
     prinList.sort((u, v) => u - v);
 
     outEl.innerHTML = `
-      <div class="readout-strip" style="margin-top:0.75rem;">
-        <div class="readout-chip">Domain: <strong>${meta.dom}</strong> ✓</div>
-        <div class="readout-chip">Principal Range: <strong>${meta.rng}</strong></div>
-        <div class="readout-chip">Branch Rule: <strong>${meta.fam}</strong></div>
+      <div class="calc-lcd-spotlight">
+        <div class="calc-lcd-spot-expr">PRINCIPAL VALUE • ${meta.name}</div>
+        <div class="calc-lcd-spot-val">${pvDisplay}</div>
       </div>
-      <div class="callout callout-intuition" style="margin-top:0.75rem;">
-        <div class="callout-title">✨ Principal Value &amp; Equation Solutions (${meta.eq})</div>
-        <div>• <strong>Principal Value ${meta.name}:</strong> <code>${pvDisplay}</code></div>
-        <div style="margin-top:0.35rem;">• <strong>Principal Solutions in [0°, 360°):</strong> <code>${prinList.map((r) => `${((r * 180) / Math.PI).toFixed(2)}° (${r.toFixed(4)} rad)`).join(" ,  ")}</code></div>
-        <div style="margin-top:0.35rem;">• <strong>General Solution:</strong> <code>${genSol}</code></div>
+      <div class="calc-inv-lcd-lines">
+        <div class="calc-inv-line">
+          <span class="calc-inv-k">BRANCH</span>
+          <span class="calc-inv-v">${meta.fam} • Range ${meta.rng}</span>
+        </div>
+        <div class="calc-inv-line">
+          <span class="calc-inv-k">[0°, 360°)</span>
+          <span class="calc-inv-v">${prinList.map((r) => `${((r * 180) / Math.PI).toFixed(1)}° (${r.toFixed(3)} rad)`).join(" , ")}</span>
+        </div>
+        <div class="calc-inv-line">
+          <span class="calc-inv-k">GEN SOL</span>
+          <span class="calc-inv-v">${genSol}</span>
+        </div>
       </div>
     `;
   }
@@ -1994,31 +2163,36 @@
     const out = document.getElementById("proof-workbench-output");
     if (!sel || !xIn || !out) return;
 
-    const p = PROOF_PRESETS[Number(sel.value) || 0] || PROOF_PRESETS[0];
+    const idx = Number(sel.value) || 0;
+    const p = PROOF_PRESETS[idx] || PROOF_PRESETS[0];
     if (lbl) lbl.textContent = `Test Input: ${p.label}`;
     if (resetDefaultVal) xIn.value = p.defaultVal;
 
-    const val = Number(xIn.value || 0);
+    document.querySelectorAll("#proof-prog-keys [data-proof-idx]").forEach((btn) => {
+      btn.classList.toggle("active", Number(btn.dataset.proofIdx) === idx);
+    });
+
+    const val = parseCalcNumber(xIn.value, 0);
     const res = p.evalPair(val);
 
     const numericHtml = res.err
-      ? `<div class="callout callout-pitfall" style="margin-top:0.75rem;"><div class="callout-title">⚠️ Domain / Branch Boundary Note</div><div>${res.err}</div></div>`
-      : `<div class="readout-strip" style="margin-top:0.75rem;">
-           <div class="readout-chip">Test Point: <strong>${res.argStr}</strong></div>
-           <div class="readout-chip">LHS = <strong>${res.lhs.toFixed(8)}</strong></div>
-           <div class="readout-chip">RHS = <strong>${res.rhs.toFixed(8)}</strong></div>
-           <div class="readout-chip">|LHS − RHS| = <strong>${Math.abs(res.lhs - res.rhs).toExponential(2)}</strong> ✅ Verified!</div>
+      ? `<div class="calc-lcd-error" style="margin-top:0.55rem;"><div class="calc-lcd-error-title">⚠ DOMAIN / BRANCH BOUNDARY</div><div>${res.err}</div></div>`
+      : `<div class="calc-cas-telemetry">
+           <div class="calc-cas-chip"><span>TEST</span><strong>${res.argStr}</strong></div>
+           <div class="calc-cas-chip"><span>LHS</span><strong>${res.lhs.toFixed(8)}</strong></div>
+           <div class="calc-cas-chip"><span>RHS</span><strong>${res.rhs.toFixed(8)}</strong></div>
+           <div class="calc-cas-chip ok"><span>|Δ|</span><strong>${Math.abs(res.lhs - res.rhs).toExponential(2)} ✓</strong></div>
          </div>`;
 
     out.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;margin-top:0.85rem;">
-        <span class="tag">${p.chapterTag}</span>
-        <button type="button" class="btn btn-secondary" id="btn-open-proof-ch" style="padding:0.38rem 0.8rem;font-size:0.8rem;">Open Full Chapter →</button>
+      <div class="calc-cas-head-row">
+        <span class="calc-cas-tag">${p.chapterTag}</span>
+        <button type="button" class="calc-cas-ch-btn" id="btn-open-proof-ch">Open Chapter →</button>
       </div>
-      <div class="math-box" style="margin:0.65rem 0;">${p.statementTex}</div>
+      <div class="calc-cas-math-box">${p.statementTex}</div>
       ${numericHtml}
-      <div class="proof-step-list">
-        ${p.steps.map((s) => `<div class="proof-step-card">${s}</div>`).join("")}
+      <div class="calc-cas-steps">
+        ${p.steps.map((s) => `<div class="calc-cas-step">${s}</div>`).join("")}
       </div>
     `;
 
@@ -2028,12 +2202,18 @@
 
   function runTriangleSolver() {
     const mode = document.getElementById("tri-mode")?.value;
-    const i1 = Number(document.getElementById("tri-v1")?.value || 0);
-    const i2 = Number(document.getElementById("tri-v2")?.value || 0);
-    const i3 = Number(document.getElementById("tri-v3")?.value || 0);
+    const i1 = parseCalcNumber(document.getElementById("tri-v1")?.value, 0);
+    const i2 = parseCalcNumber(document.getElementById("tri-v2")?.value, 0);
+    const i3 = parseCalcNumber(document.getElementById("tri-v3")?.value, 0);
     const out = document.getElementById("tri-solver-output");
     const canvas = document.getElementById("tri-solver-canvas");
     if (!mode || !out || !canvas) return;
+
+    const modeBadge = document.getElementById("tri-lcd-mode-badge");
+    if (modeBadge) modeBadge.textContent = `MODE: ${mode}`;
+    document.querySelectorAll("#tri-mode-keys [data-tri-mode]").forEach((btn) => {
+      btn.classList.toggle("active", btn.dataset.triMode === mode);
+    });
 
     const labels = {
       SSS: ["Side a", "Side b", "Side c"],
@@ -2083,7 +2263,7 @@
     }
 
     if (errorMsg) {
-      out.innerHTML = `<div class="callout callout-pitfall">${errorMsg}</div>`;
+      out.innerHTML = `<div class="calc-lcd-error" style="margin-top:0.55rem;"><div class="calc-lcd-error-title">⚠ GEOMETRY ERROR</div><div>${errorMsg}</div></div>`;
       window.TrigVisualizers.drawSolvedTriangle(canvas, null);
       return;
     }
@@ -2094,11 +2274,11 @@
     const inr = area / s;
 
     out.innerHTML = `
-      <div class="readout-strip">
-        <div class="readout-chip">Sides: <strong>a=${a.toFixed(2)}, b=${b.toFixed(2)}, c=${c.toFixed(2)}</strong></div>
-        <div class="readout-chip">Angles: <strong>A=${A.toFixed(2)}°, B=${B.toFixed(2)}°, C=${C.toFixed(2)}°</strong></div>
-        <div class="readout-chip">Area Δ: <strong>${area.toFixed(3)}</strong></div>
-        <div class="readout-chip">Circumradius R: <strong>${circumR.toFixed(3)}</strong> | Inradius r: <strong>${inr.toFixed(3)}</strong></div>
+      <div class="calc-tri-lcd-grid">
+        <div class="calc-cas-chip"><span>SIDES</span><strong>a=${a.toFixed(2)}, b=${b.toFixed(2)}, c=${c.toFixed(2)}</strong></div>
+        <div class="calc-cas-chip"><span>ANGLES</span><strong>A=${A.toFixed(1)}°, B=${B.toFixed(1)}°, C=${C.toFixed(1)}°</strong></div>
+        <div class="calc-cas-chip"><span>AREA Δ</span><strong>${area.toFixed(3)} sq.u</strong></div>
+        <div class="calc-cas-chip"><span>RADII</span><strong>R=${circumR.toFixed(3)} • r=${inr.toFixed(3)}</strong></div>
       </div>
     `;
     window.TrigVisualizers.drawSolvedTriangle(canvas, { a, b, c, A, B, C });
@@ -3478,17 +3658,249 @@
       renderSidebar(e.target.value);
     });
 
-    // Calculator & Triangle Solver listeners
-    ["calc-angle-val", "calc-angle-unit"].forEach((id) => {
-      document.getElementById(id)?.addEventListener("input", runAngleEvaluator);
+    // Calculator & Triangle Solver listeners (Physical Tactile Keypads + Direct Inputs)
+    const appendCalcDigit = (inputEl, digit, isFreshFlag) => {
+      if (!inputEl) return false;
+      let cur = isFreshFlag ? "" : String(inputEl.value || "");
+      if (digit === ".") {
+        if (cur.includes(".")) return false;
+        cur = cur === "" || cur === "-" ? (cur + "0.") : (cur + ".");
+      } else {
+        cur = cur === "0" ? digit : cur === "-0" ? "-" + digit : cur + digit;
+      }
+      inputEl.value = cur;
+      return false;
+    };
+
+    const backspaceCalcInput = (inputEl) => {
+      if (!inputEl) return;
+      const cur = String(inputEl.value || "");
+      const next = cur.slice(0, -1);
+      inputEl.value = !next || next === "-" ? "0" : next;
+    };
+
+    const toggleSignCalcInput = (inputEl) => {
+      if (!inputEl) return;
+      const cur = String(inputEl.value || "0").trim();
+      if (!cur || cur === "0") {
+        inputEl.value = "-";
+      } else if (cur.startsWith("-")) {
+        inputEl.value = cur.slice(1) || "0";
+      } else {
+        inputEl.value = "-" + cur;
+      }
+    };
+
+    // 1. Angle Scientific Calculator Listeners
+    const angleInput = document.getElementById("calc-angle-val");
+    const angleUnitSel = document.getElementById("calc-angle-unit");
+    angleInput?.addEventListener("input", () => {
+      freshAngleEntry = false;
+      runAngleEvaluator();
     });
-    ["inv-eq-fn", "inv-eq-val"].forEach((id) => {
-      document.getElementById(id)?.addEventListener("input", runInverseAndEquationSolver);
+    angleUnitSel?.addEventListener("change", () => {
+      freshAngleEntry = true;
+      runAngleEvaluator();
     });
-    document.getElementById("proof-preset-select")?.addEventListener("change", () => runIdentityProofWorkbench(true));
-    document.getElementById("proof-test-x")?.addEventListener("input", () => runIdentityProofWorkbench(false));
-    document.getElementById("tri-mode")?.addEventListener("change", (e) => {
-      const m = e.target.value;
+
+    const switchAngleUnitAndConvert = (nextUnit) => {
+      if (!angleUnitSel || !angleInput) return;
+      const prevUnit = angleUnitSel.value;
+      if (prevUnit === nextUnit) return;
+      const curRaw = parseCalcNumber(angleInput.value, 0);
+      const curDeg = prevUnit === "deg" ? curRaw : prevUnit === "rad" ? (curRaw * 180) / Math.PI : curRaw * 0.9;
+      const converted =
+        nextUnit === "deg" ? curDeg : nextUnit === "rad" ? (curDeg * Math.PI) / 180 : curDeg / 0.9;
+      angleUnitSel.value = nextUnit;
+      angleInput.value = Number(converted.toFixed(nextUnit === "rad" ? 6 : 4));
+      freshAngleEntry = true;
+      runAngleEvaluator();
+    };
+
+    document.querySelectorAll("#calc-device-angle [data-angle-unit], #calc-lcd-unit-pills [data-lcd-u]").forEach((el) => {
+      el.addEventListener("click", () => {
+        triggerHaptic(10);
+        switchAngleUnitAndConvert(el.dataset.angleUnit || el.dataset.lcdU);
+      });
+    });
+
+    document.querySelectorAll("#calc-device-angle [data-angle-deg]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!angleInput || !angleUnitSel) return;
+        triggerHaptic(8);
+        const degVal = Number(btn.dataset.angleDeg);
+        const u = angleUnitSel.value;
+        const val = u === "deg" ? degVal : u === "rad" ? Number(((degVal * Math.PI) / 180).toFixed(6)) : Number((degVal / 0.9).toFixed(4));
+        angleInput.value = val;
+        freshAngleEntry = true;
+        runAngleEvaluator();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-angle [data-trig-focus]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        triggerHaptic(8);
+        activeTrigFocus = btn.dataset.trigFocus;
+        runAngleEvaluator();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-angle [data-angle-digit]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        triggerHaptic(6);
+        freshAngleEntry = appendCalcDigit(angleInput, btn.dataset.angleDigit, freshAngleEntry);
+        runAngleEvaluator();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-angle [data-angle-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!angleInput || !angleUnitSel) return;
+        triggerHaptic(8);
+        const stepDeg = Number(btn.dataset.angleStep);
+        const u = angleUnitSel.value;
+        const delta = u === "deg" ? stepDeg : u === "rad" ? (stepDeg * Math.PI) / 180 : stepDeg / 0.9;
+        const nextVal = parseCalcNumber(angleInput.value, 0) + delta;
+        angleInput.value = Number(nextVal.toFixed(u === "rad" ? 6 : 4));
+        freshAngleEntry = true;
+        runAngleEvaluator();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-angle [data-angle-op]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!angleInput || !angleUnitSel) return;
+        triggerHaptic(8);
+        const op = btn.dataset.angleOp;
+        if (op === "ac") {
+          angleInput.value = "0";
+          freshAngleEntry = true;
+        } else if (op === "del") {
+          backspaceCalcInput(angleInput);
+          freshAngleEntry = false;
+        } else if (op === "sign") {
+          toggleSignCalcInput(angleInput);
+          freshAngleEntry = false;
+        } else if (op === "pi") {
+          const u = angleUnitSel.value;
+          angleInput.value = u === "rad" ? Number(Math.PI.toFixed(6)) : u === "grad" ? 200 : 180;
+          freshAngleEntry = true;
+        } else if (op === "eval") {
+          angleInput.value = parseCalcNumber(angleInput.value, 0);
+          freshAngleEntry = true;
+        }
+        runAngleEvaluator();
+      });
+    });
+
+    // 2. Inverse & Trig Equation Scientific Calculator Listeners
+    const invInput = document.getElementById("inv-eq-val");
+    const invFnSel = document.getElementById("inv-eq-fn");
+    invInput?.addEventListener("input", () => {
+      freshInvEntry = false;
+      runInverseAndEquationSolver();
+    });
+    invFnSel?.addEventListener("change", () => {
+      runInverseAndEquationSolver();
+    });
+
+    document.querySelectorAll("#calc-device-inverse [data-inv-fn]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!invFnSel) return;
+        triggerHaptic(8);
+        invFnSel.value = btn.dataset.invFn;
+        // Auto-adjust x if switching between [-1,1] and |x|>=1 so user sees an immediate valid readout if desired, or preserve x!
+        runInverseAndEquationSolver();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-inverse [data-inv-preset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!invInput) return;
+        triggerHaptic(8);
+        invInput.value = btn.dataset.invPreset;
+        freshInvEntry = true;
+        runInverseAndEquationSolver();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-inverse [data-inv-digit]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        triggerHaptic(6);
+        freshInvEntry = appendCalcDigit(invInput, btn.dataset.invDigit, freshInvEntry);
+        runInverseAndEquationSolver();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-inverse [data-inv-op]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!invInput) return;
+        triggerHaptic(8);
+        const op = btn.dataset.invOp;
+        if (op === "ac") {
+          invInput.value = "0";
+          freshInvEntry = true;
+        } else if (op === "del") {
+          backspaceCalcInput(invInput);
+          freshInvEntry = false;
+        } else if (op === "sign") {
+          toggleSignCalcInput(invInput);
+          freshInvEntry = false;
+        } else if (op === "recip") {
+          const cur = parseCalcNumber(invInput.value, 0);
+          if (Math.abs(cur) > 1e-9) {
+            invInput.value = Number((1 / cur).toFixed(7));
+            freshInvEntry = true;
+          }
+        } else if (op === "eval") {
+          invInput.value = parseCalcNumber(invInput.value, 0);
+          freshInvEntry = true;
+        }
+        runInverseAndEquationSolver();
+      });
+    });
+
+    // 3. CAS Identity & Simplification Calculator Listeners
+    const proofSel = document.getElementById("proof-preset-select");
+    const proofXIn = document.getElementById("proof-test-x");
+    proofSel?.addEventListener("change", () => runIdentityProofWorkbench(true));
+    proofXIn?.addEventListener("input", () => runIdentityProofWorkbench(false));
+
+    document.querySelectorAll("#proof-prog-keys [data-proof-idx]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!proofSel) return;
+        triggerHaptic(8);
+        proofSel.value = btn.dataset.proofIdx;
+        runIdentityProofWorkbench(true);
+      });
+    });
+
+    document.querySelectorAll("#calc-device-proof [data-proof-step]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!proofXIn) return;
+        triggerHaptic(8);
+        const next = parseCalcNumber(proofXIn.value, 0) + Number(btn.dataset.proofStep);
+        proofXIn.value = Number(next.toFixed(4));
+        runIdentityProofWorkbench(false);
+      });
+    });
+
+    document.querySelector("#calc-device-proof [data-proof-reset]")?.addEventListener("click", () => {
+      triggerHaptic(8);
+      runIdentityProofWorkbench(true);
+    });
+
+    // 4. Graphing Triangle Solver Calculator Listeners
+    const triModeSel = document.getElementById("tri-mode");
+    const setActiveTriSlot = (slotId) => {
+      activeTriSlotId = slotId;
+      freshTriEntry = true;
+      document.querySelectorAll("#calc-device-triangle [data-tri-slot]").forEach((box) => {
+        box.classList.toggle("active", box.dataset.triSlot === slotId);
+      });
+    };
+
+    const applyTriModeDefaults = (m) => {
       if (m === "SSS") {
         document.getElementById("tri-v1").value = 5;
         document.getElementById("tri-v2").value = 6;
@@ -3502,10 +3914,85 @@
         document.getElementById("tri-v2").value = 10;
         document.getElementById("tri-v3").value = 60;
       }
+      freshTriEntry = true;
       runTriangleSolver();
+    };
+
+    triModeSel?.addEventListener("change", (e) => applyTriModeDefaults(e.target.value));
+    document.querySelectorAll("#tri-mode-keys [data-tri-mode]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!triModeSel) return;
+        triggerHaptic(8);
+        triModeSel.value = btn.dataset.triMode;
+        applyTriModeDefaults(btn.dataset.triMode);
+      });
     });
+
+    document.querySelectorAll("#calc-device-triangle [data-tri-preset]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (!triModeSel) return;
+        triggerHaptic(8);
+        const [v1, v2, v3, mode] = btn.dataset.triPreset.split(",");
+        triModeSel.value = mode;
+        document.getElementById("tri-v1").value = v1;
+        document.getElementById("tri-v2").value = v2;
+        document.getElementById("tri-v3").value = v3;
+        freshTriEntry = true;
+        runTriangleSolver();
+      });
+    });
+
     ["tri-v1", "tri-v2", "tri-v3"].forEach((id) => {
-      document.getElementById(id)?.addEventListener("input", runTriangleSolver);
+      const el = document.getElementById(id);
+      el?.addEventListener("focus", () => setActiveTriSlot(id));
+      el?.addEventListener("click", () => setActiveTriSlot(id));
+      el?.addEventListener("input", () => {
+        freshTriEntry = false;
+        runTriangleSolver();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-triangle [data-tri-slot]").forEach((box) => {
+      box.addEventListener("click", (e) => {
+        if (e.target.tagName !== "INPUT") {
+          setActiveTriSlot(box.dataset.triSlot);
+        }
+      });
+    });
+
+    document.querySelectorAll("#calc-device-triangle [data-tri-digit]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const slotEl = document.getElementById(activeTriSlotId);
+        if (!slotEl) return;
+        triggerHaptic(6);
+        freshTriEntry = appendCalcDigit(slotEl, btn.dataset.triDigit, freshTriEntry);
+        runTriangleSolver();
+      });
+    });
+
+    document.querySelectorAll("#calc-device-triangle [data-tri-op]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const slotEl = document.getElementById(activeTriSlotId);
+        if (!slotEl) return;
+        triggerHaptic(8);
+        const op = btn.dataset.triOp;
+        if (op === "del") {
+          backspaceCalcInput(slotEl);
+          freshTriEntry = false;
+        } else if (op === "next") {
+          const order = ["tri-v1", "tri-v2", "tri-v3"];
+          const nextId = order[(order.indexOf(activeTriSlotId) + 1) % order.length];
+          setActiveTriSlot(nextId);
+          return;
+        } else if (op === "inc" || op === "dec") {
+          const next = Math.max(0.1, parseCalcNumber(slotEl.value, 1) + (op === "inc" ? 1 : -1));
+          slotEl.value = Number(next.toFixed(2));
+          freshTriEntry = true;
+        } else if (op === "eval") {
+          freshTriEntry = true;
+        }
+        runTriangleSolver();
+      });
     });
 
     // Vault listeners & 12-Section Progressive Filter Bar
@@ -3674,6 +4161,7 @@
     window.addEventListener("resize", () => {
       if (typeof activeLessonRedraw === "function") activeLessonRedraw();
       if (typeof activeHubRedraw === "function") activeHubRedraw();
+      if (currentViewId === "solver") runTriangleSolver();
     });
 
     typesetMath(document.body);

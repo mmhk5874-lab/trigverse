@@ -2578,9 +2578,34 @@ window.TrigVisualizers = (function () {
   }
 
   function drawSolvedTriangle(canvas, tri) {
-    const { ctx, w, h, isNarrow, colors } = prepareCanvas(canvas, 250, 225);
-    ctx.fillStyle = colors.bg;
+    const { ctx, w, h, isNarrow } = prepareCanvas(canvas, 265, 230);
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    const lcdBg = isLight ? "#d7e6cf" : "#0b1a16";
+    const lcdGrid = isLight ? "rgba(18, 52, 34, 0.1)" : "rgba(74, 222, 128, 0.09)";
+    const lcdStroke = isLight ? "#0f4c35" : "#34d399";
+    const lcdFill = isLight ? "rgba(16, 185, 129, 0.18)" : "rgba(52, 211, 153, 0.16)";
+    const lcdText = isLight ? "#0d291d" : "#ecfdf5";
+    const lcdAccent = isLight ? "#b45309" : "#fbbf24";
+
+    ctx.fillStyle = lcdBg;
     ctx.fillRect(0, 0, w, h);
+
+    // Subtle Graphing-Calculator Pixel Grid
+    ctx.strokeStyle = lcdGrid;
+    ctx.lineWidth = 1;
+    for (let gx = 20; gx < w; gx += 24) {
+      ctx.beginPath();
+      ctx.moveTo(gx, 0);
+      ctx.lineTo(gx, h);
+      ctx.stroke();
+    }
+    for (let gy = 20; gy < h; gy += 24) {
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(w, gy);
+      ctx.stroke();
+    }
+
     if (!tri) return;
 
     // Place A at (0,0), B at (c, 0), C at (b cos A, b sin A)
@@ -2606,8 +2631,8 @@ window.TrigVisualizers = (function () {
     });
     const P = pts.map(mapPt);
 
-    ctx.fillStyle = "rgba(99, 102, 241, 0.16)";
-    ctx.strokeStyle = colors.cyan;
+    ctx.fillStyle = lcdFill;
+    ctx.strokeStyle = lcdStroke;
     ctx.lineWidth = 2.8;
     ctx.beginPath();
     ctx.moveTo(P[0].x, P[0].y);
@@ -2617,16 +2642,24 @@ window.TrigVisualizers = (function () {
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = colors.text;
-    ctx.font = isNarrow ? "bold 11px Inter, sans-serif" : "bold 12px Inter, sans-serif";
-    ctx.fillText(pts[0].label, Math.max(4, P[0].x - 28), P[0].y + 18);
-    ctx.fillText(pts[1].label, Math.min(w - 64, P[1].x - 20), P[1].y + 18);
-    ctx.fillText(pts[2].label, Math.min(w - 64, Math.max(4, P[2].x - 25)), Math.max(16, P[2].y - 10));
+    // Vertex dots
+    P.forEach((pt) => {
+      ctx.fillStyle = lcdAccent;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+      ctx.fill();
+    });
 
-    ctx.fillStyle = colors.amber;
-    ctx.fillText(`c=${tri.c.toFixed(1)}`, (P[0].x + P[1].x) / 2 - 18, (P[0].y + P[1].y) / 2 + 16);
-    ctx.fillText(`a=${tri.a.toFixed(1)}`, Math.min(w - 52, (P[1].x + P[2].x) / 2 + 6), (P[1].y + P[2].y) / 2);
-    ctx.fillText(`b=${tri.b.toFixed(1)}`, Math.max(4, (P[0].x + P[2].x) / 2 - 48), (P[0].y + P[2].y) / 2);
+    ctx.fillStyle = lcdText;
+    ctx.font = isNarrow ? "bold 11px 'JetBrains Mono', monospace" : "bold 12px 'JetBrains Mono', monospace";
+    ctx.fillText(pts[0].label, Math.max(6, P[0].x - 28), P[0].y + 19);
+    ctx.fillText(pts[1].label, Math.min(w - 76, P[1].x - 20), P[1].y + 19);
+    ctx.fillText(pts[2].label, Math.min(w - 76, Math.max(6, P[2].x - 25)), Math.max(18, P[2].y - 10));
+
+    ctx.fillStyle = lcdAccent;
+    ctx.fillText(`c=${tri.c.toFixed(1)}`, (P[0].x + P[1].x) / 2 - 20, (P[0].y + P[1].y) / 2 + 17);
+    ctx.fillText(`a=${tri.a.toFixed(1)}`, Math.min(w - 58, (P[1].x + P[2].x) / 2 + 8), (P[1].y + P[2].y) / 2);
+    ctx.fillText(`b=${tri.b.toFixed(1)}`, Math.max(6, (P[0].x + P[2].x) / 2 - 52), (P[0].y + P[2].y) / 2);
   }
 
   return { mount, drawSolvedTriangle };

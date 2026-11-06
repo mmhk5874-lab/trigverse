@@ -6094,3 +6094,2127 @@ input[type="range"]::-moz-range-thumb {
     font-size: 0.87em;
   }
 }
+
+/* ==========================================================================
+   🧮 Physical Handheld Scientific & Graphing Calculator Chassis Design
+   ========================================================================== */
+.calc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.calc-handheld-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: 1.85rem;
+  align-items: stretch;
+  justify-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Molded 3D Physical Calculator Casing */
+.calc-device {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 530px;
+  padding: 1.35rem 1.3rem 1.65rem;
+  border-radius: 30px 30px 40px 40px;
+  background:
+    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.08), transparent 42%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(168deg, #2b1d19 0%, #1c1210 48%, #130b09 100%);
+  border: 2px solid rgba(253, 224, 71, 0.28);
+  box-shadow:
+    0 11px 0 #0b0503,
+    0 13px 0 rgba(251, 146, 60, 0.32),
+    0 26px 52px rgba(0, 0, 0, 0.62),
+    inset 0 2px 1px rgba(255, 255, 255, 0.18),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.65);
+  color: #f8fafc;
+}
+
+/* Side Ergonomic Grip Grooves on Handheld Calculators */
+.calc-device:not(.calc-device-console)::before,
+.calc-device:not(.calc-device-console)::after {
+  content: "";
+  position: absolute;
+  top: 44%;
+  bottom: 14%;
+  width: 4px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, rgba(249, 115, 22, 0.45), rgba(253, 224, 71, 0.18));
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+.calc-device:not(.calc-device-console)::before {
+  left: 5px;
+}
+
+.calc-device:not(.calc-device-console)::after {
+  right: 5px;
+}
+
+.calc-device.calc-device-console {
+  max-width: 100%;
+  margin-bottom: 2rem;
+  border-radius: 28px 28px 34px 34px;
+}
+
+[data-theme="light"] .calc-device {
+  background:
+    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.85), transparent 46%),
+    linear-gradient(168deg, #f8fafc 0%, #e2e8f0 56%, #cbd5e1 100%);
+  border-color: rgba(100, 116, 139, 0.48);
+  box-shadow:
+    0 10px 0 #94a3b8,
+    0 12px 0 rgba(15, 23, 42, 0.2),
+    0 22px 44px rgba(124, 45, 18, 0.24),
+    inset 0 2px 1px #ffffff,
+    inset 0 -3px 8px rgba(100, 116, 139, 0.32);
+  color: #0f172a;
+}
+
+/* Subtle Corner Bezel Rivets */
+.calc-chassis-screws {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.2rem;
+  margin-bottom: 0.35rem;
+  pointer-events: none;
+}
+
+.calc-chassis-screws span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #64748b, #1e293b);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* Top Brand & Solar Cell Strip */
+.calc-brand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  padding: 0 0.2rem;
+}
+
+.calc-maker-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.48rem;
+  flex-wrap: wrap;
+}
+
+.calc-maker {
+  font-family: "Cinzel", "Outfit", sans-serif;
+  font-weight: 900;
+  font-size: 1.02rem;
+  letter-spacing: 0.1em;
+  background: linear-gradient(180deg, #fef08a 0%, #fb923c 65%, #ea580c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .calc-maker {
+  background: linear-gradient(180deg, #ea580c 0%, #9a3412 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.calc-model {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-style: italic;
+  color: #fde047;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1rem 0.45rem;
+  border-radius: 5px;
+  border: 1px solid rgba(253, 224, 71, 0.28);
+}
+
+[data-theme="light"] .calc-model {
+  color: #1e293b;
+  background: rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 23, 42, 0.18);
+}
+
+.calc-submodel {
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: rgba(254, 215, 170, 0.72);
+  margin-top: 0.14rem;
+}
+
+[data-theme="light"] .calc-submodel {
+  color: #475569;
+}
+
+/* Realistic 4-Cell Photovoltaic Solar Panel */
+.calc-solar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.18rem;
+  flex-shrink: 0;
+}
+
+.calc-solar-panel {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 96px;
+  height: 26px;
+  padding: 2px;
+  border-radius: 5px;
+  background: #090504;
+  border: 1.5px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    inset 0 2px 5px rgba(0, 0, 0, 0.9),
+    0 1px 0 rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+  position: relative;
+}
+
+.calc-solar-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.2) 0%, transparent 38%, rgba(251, 191, 36, 0.08) 100%);
+  pointer-events: none;
+}
+
+.calc-solar-panel span {
+  background: linear-gradient(180deg, #3b1d16 0%, #24100c 55%, #311711 100%);
+  border-right: 1px solid rgba(212, 163, 115, 0.38);
+}
+
+.calc-solar-panel span:last-child {
+  border-right: none;
+}
+
+.calc-solar-label {
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(254, 215, 170, 0.58);
+}
+
+[data-theme="light"] .calc-solar-label {
+  color: #64748b;
+}
+
+/* Recessed Screen Bezel & Backlit Natural-Display LCD */
+.calc-screen-bezel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0.62rem;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #0b0706 0%, #170f0d 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 4px 10px rgba(0, 0, 0, 0.92),
+    0 2px 0 rgba(255, 255, 255, 0.08);
+  margin-bottom: 1rem;
+}
+
+.calc-screen-bezel .calc-lcd {
+  flex: 1;
+}
+
+[data-theme="light"] .calc-screen-bezel {
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  border-color: rgba(15, 23, 42, 0.35);
+}
+
+.calc-lcd {
+  position: relative;
+  padding: 0.72rem 0.82rem 0.8rem;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(52, 211, 153, 0.024) 0px,
+      rgba(52, 211, 153, 0.024) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(180deg, #0e241d 0%, #081712 100%);
+  border: 1.5px solid rgba(52, 211, 153, 0.34);
+  box-shadow:
+    inset 0 3px 12px rgba(0, 0, 0, 0.65),
+    0 0 18px rgba(16, 185, 129, 0.12);
+  color: #d1fae5;
+  font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+[data-theme="light"] .calc-lcd {
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(15, 42, 28, 0.025) 0px,
+      rgba(15, 42, 28, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(180deg, #dbe9d3 0%, #c8dabf 100%);
+  border-color: rgba(21, 68, 43, 0.38);
+  box-shadow: inset 0 3px 9px rgba(15, 40, 24, 0.2);
+  color: #0b261a;
+}
+
+/* LCD Top Status Row */
+.calc-lcd-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.42rem;
+  margin-bottom: 0.48rem;
+  border-bottom: 1px dashed rgba(110, 231, 183, 0.24);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="light"] .calc-lcd-status {
+  border-bottom-color: rgba(15, 42, 28, 0.22);
+}
+
+.calc-lcd-badge {
+  padding: 0.1rem 0.38rem;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+}
+
+[data-theme="light"] .calc-lcd-badge {
+  background: rgba(15, 42, 28, 0.14);
+  color: #0b261a;
+}
+
+.calc-lcd-modes {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.calc-lcd-modes span {
+  padding: 0.08rem 0.34rem;
+  border-radius: 3px;
+  opacity: 0.35;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.calc-lcd-modes span.active {
+  opacity: 1;
+  background: #fbbf24;
+  color: #140a02;
+  font-weight: 800;
+}
+
+.calc-lcd-dom-pill {
+  padding: 0.08rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.2);
+  color: #6ee7b7;
+}
+
+.calc-lcd-dom-pill.is-err {
+  background: rgba(244, 63, 94, 0.28);
+  color: #fda4af;
+}
+
+[data-theme="light"] .calc-lcd-dom-pill {
+  background: rgba(16, 185, 129, 0.22);
+  color: #064e3b;
+}
+
+[data-theme="light"] .calc-lcd-dom-pill.is-err {
+  background: rgba(225, 29, 72, 0.2);
+  color: #881337;
+}
+
+.calc-lcd-quad {
+  color: #fde047;
+  font-weight: 700;
+}
+
+[data-theme="light"] .calc-lcd-quad {
+  color: #92400e;
+}
+
+/* LCD Direct Editable Input Line */
+.calc-lcd-entry-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  border-radius: 8px;
+  padding: 0.34rem 0.62rem;
+  margin-bottom: 0.52rem;
+}
+
+[data-theme="light"] .calc-lcd-entry-row {
+  background: rgba(255, 255, 255, 0.46);
+  border-color: rgba(15, 42, 28, 0.22);
+}
+
+.calc-lcd-prompt {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6ee7b7;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .calc-lcd-prompt {
+  color: #14532d;
+}
+
+.calc-lcd-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: #ecfdf5;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-align: right;
+  outline: none;
+  padding: 0.05rem 0;
+}
+
+[data-theme="light"] .calc-lcd-input {
+  color: #052e16;
+}
+
+.calc-lcd-unit-tag {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #fbbf24;
+}
+
+[data-theme="light"] .calc-lcd-unit-tag {
+  color: #b45309;
+}
+
+/* Primary Spotlight Expression & Big Digital Readout */
+.calc-lcd-spotlight {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 0.42rem 0.58rem;
+  margin-bottom: 0.52rem;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.24);
+}
+
+[data-theme="light"] .calc-lcd-spotlight {
+  background: rgba(15, 42, 28, 0.08);
+  border-color: rgba(15, 42, 28, 0.18);
+}
+
+.calc-lcd-spot-expr {
+  font-size: 0.73rem;
+  color: #a7f3d0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+[data-theme="light"] .calc-lcd-spot-expr {
+  color: #14532d;
+}
+
+.calc-lcd-exact-pill {
+  padding: 0.08rem 0.4rem;
+  border-radius: 4px;
+  background: rgba(251, 191, 36, 0.22);
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  color: #fde047;
+  font-size: 0.69rem;
+  font-weight: 800;
+}
+
+[data-theme="light"] .calc-lcd-exact-pill {
+  background: rgba(217, 119, 6, 0.18);
+  border-color: rgba(180, 83, 9, 0.4);
+  color: #78350f;
+}
+
+.calc-lcd-spot-val {
+  font-size: 1.24rem;
+  font-weight: 800;
+  color: #fef08a;
+  letter-spacing: 0.02em;
+  margin-left: auto;
+}
+
+[data-theme="light"] .calc-lcd-spot-val {
+  color: #052e16;
+}
+
+/* 6-Ratio Matrix Inside LCD Screen */
+.calc-lcd-ratio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.36rem;
+}
+
+.calc-lcd-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.15rem;
+  padding: 0.36rem 0.46rem;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(110, 231, 183, 0.18);
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.calc-lcd-cell:hover {
+  border-color: rgba(251, 191, 36, 0.55);
+}
+
+.calc-lcd-cell.active {
+  background: rgba(251, 191, 36, 0.16);
+  border-color: #fbbf24;
+  box-shadow: inset 0 0 8px rgba(251, 191, 36, 0.18);
+}
+
+[data-theme="light"] .calc-lcd-cell {
+  background: rgba(255, 255, 255, 0.42);
+  border-color: rgba(15, 42, 28, 0.18);
+}
+
+[data-theme="light"] .calc-lcd-cell.active {
+  background: rgba(251, 191, 36, 0.34);
+  border-color: #d97706;
+}
+
+.calc-lcd-cell-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.calc-lcd-cell-fn {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #6ee7b7;
+}
+
+[data-theme="light"] .calc-lcd-cell-fn {
+  color: #166534;
+}
+
+.calc-lcd-cell-exact {
+  font-size: 0.63rem;
+  font-weight: 700;
+  color: #fde047;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .calc-lcd-cell-exact {
+  color: #92400e;
+}
+
+.calc-lcd-cell-num {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #ecfdf5;
+  text-align: right;
+}
+
+[data-theme="light"] .calc-lcd-cell-num {
+  color: #052e16;
+}
+
+.calc-lcd-cell-num.is-undef {
+  color: #fda4af;
+  font-size: 0.74rem;
+}
+
+[data-theme="light"] .calc-lcd-cell-num.is-undef {
+  color: #be123c;
+}
+
+/* Inverse Calculator LCD Lines & Math Error Box */
+.calc-inv-lcd-lines {
+  display: grid;
+  gap: 0.32rem;
+}
+
+.calc-inv-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.48rem;
+  padding: 0.3rem 0.48rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(110, 231, 183, 0.15);
+  font-size: 0.74rem;
+  line-height: 1.4;
+}
+
+[data-theme="light"] .calc-inv-line {
+  background: rgba(255, 255, 255, 0.42);
+  border-color: rgba(15, 42, 28, 0.16);
+}
+
+.calc-inv-k {
+  flex-shrink: 0;
+  font-size: 0.63rem;
+  font-weight: 800;
+  padding: 0.08rem 0.34rem;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.18);
+  color: #6ee7b7;
+}
+
+[data-theme="light"] .calc-inv-k {
+  background: rgba(15, 42, 28, 0.14);
+  color: #064e3b;
+}
+
+.calc-inv-v {
+  color: #ecfdf5;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+[data-theme="light"] .calc-inv-v {
+  color: #0b261a;
+}
+
+.calc-lcd-error {
+  padding: 0.58rem 0.68rem;
+  border-radius: 8px;
+  background: rgba(244, 63, 94, 0.18);
+  border: 1px solid rgba(251, 113, 133, 0.5);
+  color: #ffe4e6;
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+[data-theme="light"] .calc-lcd-error {
+  background: rgba(225, 29, 72, 0.14);
+  border-color: rgba(190, 18, 60, 0.45);
+  color: #881337;
+}
+
+.calc-lcd-error-title {
+  font-weight: 800;
+  color: #fda4af;
+  margin-bottom: 0.2rem;
+}
+
+[data-theme="light"] .calc-lcd-error-title {
+  color: #9f1239;
+}
+
+/* ==========================================================================
+   3D Tactile Calculator Keypad & Sculpted Keycaps
+   ========================================================================== */
+.calc-keypad {
+  display: grid;
+  gap: 0.52rem;
+  padding: 0.78rem 0.68rem 0.68rem;
+  border-radius: 18px;
+  background: rgba(8, 4, 3, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .calc-keypad {
+  background: rgba(148, 163, 184, 0.24);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.12);
+}
+
+.calc-key-row {
+  display: grid;
+  gap: 0.48rem;
+}
+
+.calc-row-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.calc-row-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.calc-row-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.calc-row-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Base 3D Molded Keycap */
+.calc-key {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.35rem 0.3rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, #3a2b27 0%, #261b18 100%);
+  color: #f8fafc;
+  font-family: "JetBrains Mono", "Inter", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  user-select: none;
+  box-shadow:
+    0 4px 0 #110907,
+    0 6px 10px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.15s ease, filter 0.15s ease;
+}
+
+.calc-key:hover {
+  filter: brightness(1.1);
+  border-color: rgba(253, 224, 71, 0.45);
+}
+
+.calc-key:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 1px 0 #110907,
+    0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Mode Pill Keys (DEG / RAD / GRAD) */
+.calc-key.key-mode {
+  min-height: 34px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  box-shadow:
+    0 3px 0 #0f172a,
+    0 5px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.calc-key.key-mode.active {
+  background: linear-gradient(180deg, #fbbf24 0%, #ea580c 100%);
+  color: #1c0802;
+  border-color: #fef08a;
+  box-shadow:
+    0 3px 0 #9a3412,
+    0 0 12px rgba(251, 191, 36, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* Constant / Surd Preset Keys */
+.calc-key.key-const {
+  min-height: 34px;
+  font-size: 0.72rem;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #292220 0%, #1b1514 100%);
+  color: #fed7aa;
+  box-shadow:
+    0 3px 0 #0c0807,
+    0 4px 8px rgba(0, 0, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="light"] .calc-key.key-const {
+  background: linear-gradient(180deg, #475569 0%, #334155 100%);
+  color: #fef3c7;
+  box-shadow: 0 3px 0 #1e293b, 0 4px 8px rgba(15, 23, 42, 0.18);
+}
+
+/* Scientific Function Keys (sin, cos, tan, csc, sec, cot, sin^-1...) */
+.calc-key.key-sci {
+  min-height: 46px;
+  padding: 0.28rem 0.35rem;
+  background: linear-gradient(180deg, #2d262e 0%, #1c171d 100%);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.calc-key.key-sci .key-legend {
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: #fbbf24;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.1rem;
+}
+
+.calc-key.key-sci .key-main {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+}
+
+.calc-key.key-sci.active {
+  background: linear-gradient(180deg, #5b250c 0%, #3b1506 100%);
+  border-color: #fde047;
+  box-shadow:
+    0 4px 0 #1f0a02,
+    0 0 14px rgba(249, 115, 22, 0.48),
+    inset 0 1px 0 rgba(254, 240, 138, 0.45);
+}
+
+[data-theme="light"] .calc-key.key-sci {
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  box-shadow: 0 4px 0 #0f172a, 0 5px 10px rgba(15, 23, 42, 0.2);
+}
+
+[data-theme="light"] .calc-key.key-sci.active {
+  background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+  border-color: #9a3412;
+  box-shadow: 0 4px 0 #7c2d12, 0 0 12px rgba(234, 88, 12, 0.38);
+}
+
+[data-theme="light"] .calc-key.key-sci.active .key-legend {
+  color: #fef08a;
+}
+
+/* Sculpted Main Numeric Keys (0 – 9, .) */
+.calc-key.key-num {
+  min-height: 44px;
+  font-size: 1.04rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, #4b3b36 0%, #352824 100%);
+  color: #fffbeb;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="light"] .calc-key.key-num {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  color: #0f172a;
+  border-color: rgba(100, 116, 139, 0.42);
+  box-shadow:
+    0 4px 0 #94a3b8,
+    0 5px 10px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 #ffffff;
+}
+
+/* Angle Step & Secondary Operator Keys */
+.calc-key.key-step,
+.calc-key.key-fn-alt {
+  font-size: 0.78rem;
+  background: linear-gradient(180deg, #3b261d 0%, #271812 100%);
+  color: #fde047;
+}
+
+[data-theme="light"] .calc-key.key-step,
+[data-theme="light"] .calc-key.key-fn-alt {
+  background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%);
+  color: #9a3412;
+  border-color: rgba(100, 116, 139, 0.42);
+  box-shadow: 0 4px 0 #94a3b8, 0 4px 8px rgba(15, 23, 42, 0.12);
+}
+
+/* Classic Casio Orange/Crimson DEL & AC Keys */
+.calc-key.key-del {
+  background: linear-gradient(180deg, #d97706 0%, #b45309 100%);
+  color: #fffbeb;
+  border-color: rgba(254, 240, 138, 0.45);
+  box-shadow: 0 3px 0 #78350f, 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.calc-key.key-ac {
+  background: linear-gradient(180deg, #e11d48 0%, #be123c 100%);
+  color: #ffffff;
+  border-color: rgba(253, 164, 175, 0.5);
+  box-shadow: 0 3px 0 #881337, 0 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Signature Luminous Equals / Solve Key */
+.calc-key.key-eq {
+  font-size: 1.05rem;
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 55%, #c2410c 100%);
+  color: #ffffff;
+  border-color: #fde047;
+  box-shadow:
+    0 4px 0 #7c2d12,
+    0 6px 14px rgba(249, 115, 22, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* ==========================================================================
+   Console CAS & Graphing Calculators (Calculators 3 & 4)
+   ========================================================================== */
+.calc-console-body {
+  display: grid;
+  grid-template-columns: minmax(290px, 380px) minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.calc-console-controls {
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem;
+  border-radius: 18px;
+  background: rgba(8, 4, 3, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.52);
+}
+
+[data-theme="light"] .calc-console-controls {
+  background: rgba(148, 163, 184, 0.22);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.calc-console-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: #fdba74;
+  margin-bottom: 0.48rem;
+}
+
+[data-theme="light"] .calc-console-label {
+  color: #475569;
+}
+
+.calc-console-screen {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-console-screen .calc-lcd {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-field-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
+  padding: 0.42rem 0.6rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1.5px solid rgba(254, 215, 170, 0.18);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calc-field-slot.active {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+[data-theme="light"] .calc-field-slot {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(100, 116, 139, 0.32);
+}
+
+[data-theme="light"] .calc-field-slot.active {
+  border-color: #ea580c;
+  box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.2);
+}
+
+.calc-field-slot label {
+  font-size: 0.69rem;
+  font-weight: 700;
+  color: #fed7aa;
+}
+
+[data-theme="light"] .calc-field-slot label {
+  color: #475569;
+}
+
+.calc-slot-input,
+.calc-slot-select {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #fef08a;
+  font-family: "JetBrains Mono", Consolas, monospace;
+  font-size: 0.92rem;
+  font-weight: 800;
+  outline: none;
+}
+
+.calc-slot-select option {
+  background: #1c100b;
+  color: #fffbeb;
+}
+
+[data-theme="light"] .calc-slot-input,
+[data-theme="light"] .calc-slot-select {
+  color: #0f172a;
+}
+
+[data-theme="light"] .calc-slot-select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.calc-tri-slots {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin-top: 0.55rem;
+}
+
+.calc-graph-canvas {
+  border-radius: 8px;
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  margin-bottom: 0.55rem;
+}
+
+[data-theme="light"] .calc-graph-canvas {
+  border-color: rgba(15, 42, 28, 0.24);
+}
+
+/* CAS & Triangle LCD Telemetry Readouts */
+.calc-cas-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
+.calc-cas-tag {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 0.16rem 0.52rem;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.2);
+  color: #fde047;
+}
+
+[data-theme="light"] .calc-cas-tag {
+  background: rgba(180, 83, 9, 0.16);
+  color: #78350f;
+}
+
+.calc-cas-ch-btn {
+  padding: 0.24rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  background: rgba(16, 185, 129, 0.18);
+  color: #a7f3d0;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+[data-theme="light"] .calc-cas-ch-btn {
+  background: rgba(15, 42, 28, 0.12);
+  border-color: rgba(15, 42, 28, 0.3);
+  color: #064e3b;
+}
+
+.calc-cas-math-box {
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid #fbbf24;
+  overflow-x: auto;
+  margin-bottom: 0.55rem;
+}
+
+[data-theme="light"] .calc-cas-math-box {
+  background: rgba(255, 255, 255, 0.5);
+  border-left-color: #d97706;
+}
+
+.calc-cas-telemetry,
+.calc-tri-lcd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.calc-tri-lcd-grid {
+  margin-bottom: 0;
+}
+
+.calc-cas-chip {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.34rem 0.52rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(110, 231, 183, 0.18);
+  font-size: 0.74rem;
+}
+
+.calc-cas-chip.ok {
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(16, 185, 129, 0.14);
+}
+
+[data-theme="light"] .calc-cas-chip {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(15, 42, 28, 0.18);
+}
+
+.calc-cas-chip span {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #6ee7b7;
+}
+
+[data-theme="light"] .calc-cas-chip span {
+  color: #166534;
+}
+
+.calc-cas-chip strong {
+  color: #fef08a;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+[data-theme="light"] .calc-cas-chip strong {
+  color: #052e16;
+}
+
+.calc-cas-steps {
+  display: grid;
+  gap: 0.38rem;
+  font-family: "Inter", sans-serif;
+}
+
+.calc-cas-step {
+  padding: 0.46rem 0.62rem;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(110, 231, 183, 0.14);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #ecfdf5;
+}
+
+[data-theme="light"] .calc-cas-step {
+  background: rgba(255, 255, 255, 0.48);
+  border-color: rgba(15, 42, 28, 0.15);
+  color: #0f291e;
+}
+
+/* Responsive Console & Mobile Phone Calculator Ergonomics */
+@media (max-width: 920px) {
+  .calc-console-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .calc-device {
+    padding: 1rem 0.82rem 1.25rem;
+    border-radius: 24px 24px 30px 30px;
+  }
+
+  .calc-solar-panel {
+    width: 76px;
+    height: 22px;
+  }
+
+  .calc-lcd-ratio-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .calc-cas-telemetry,
+  .calc-tri-lcd-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calc-key {
+    min-height: 40px;
+    font-size: 0.8rem;
+  }
+
+  .calc-row-6 {
+    gap: 0.32rem;
+  }
+
+  .calc-key.key-mode,
+  .calc-key.key-const {
+    font-size: 0.66rem;
+    padding: 0.28rem 0.18rem;
+  }
+}
+
+/* ==========================================================================
+   🧮 Flagship fx-991CW Multi-Mode Scientific Calculator & All-Mode Drawer
+   ========================================================================== */
+.topbar-calc-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.78rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(253, 224, 71, 0.52);
+  background: linear-gradient(180deg, #3b1d12 0%, #241009 100%);
+  color: #fef08a;
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #120602, 0 4px 12px rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s ease, border-color 0.15s ease, filter 0.15s ease;
+  white-space: nowrap;
+}
+
+.topbar-calc-chip:hover {
+  filter: brightness(1.14);
+  border-color: #fde047;
+}
+
+.topbar-calc-chip.active {
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+  color: #ffffff;
+  border-color: #fef08a;
+}
+
+[data-theme="light"] .topbar-calc-chip {
+  background: linear-gradient(180deg, #ffffff 0%, #ffedd5 100%);
+  color: #9a3412;
+  border-color: rgba(234, 88, 12, 0.5);
+  box-shadow: 0 3px 0 #fdba74, 0 4px 10px rgba(124, 45, 18, 0.15);
+}
+
+[data-theme="light"] .topbar-calc-chip.active {
+  background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+}
+
+.sci-master-page-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.15rem;
+}
+
+.sci-master-device {
+  max-width: 580px;
+  width: 100%;
+}
+
+/* 6-Mode Hardware Selector Bar */
+.sci-mode-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.36rem;
+  margin-bottom: 0.85rem;
+  padding: 0.36rem;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .sci-mode-strip {
+  background: rgba(15, 23, 42, 0.1);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.sci-mode-pill {
+  padding: 0.36rem 0.2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, #2d221e 0%, #1c1412 100%);
+  color: #fed7aa;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.67rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 0 #0b0604;
+  transition: all 0.14s ease;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sci-mode-pill:hover {
+  border-color: rgba(253, 224, 71, 0.5);
+  color: #ffffff;
+}
+
+.sci-mode-pill.active {
+  background: linear-gradient(180deg, #fbbf24 0%, #ea580c 100%);
+  color: #1c0802;
+  border-color: #fef08a;
+  box-shadow: 0 2px 0 #7c2d12, 0 0 12px rgba(251, 191, 36, 0.45);
+}
+
+[data-theme="light"] .sci-mode-pill {
+  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+  color: #334155;
+  border-color: rgba(100, 116, 139, 0.35);
+  box-shadow: 0 2px 0 #94a3b8;
+}
+
+[data-theme="light"] .sci-mode-pill.active {
+  background: linear-gradient(180deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  border-color: #9a3412;
+}
+
+/* LCD Flags & Multi-Mode Viewport */
+.sci-flag-group {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.sci-flag {
+  padding: 0.06rem 0.3rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0.28;
+  font-weight: 800;
+}
+
+.sci-flag.on {
+  opacity: 1;
+  background: #fde047;
+  color: #1c0802;
+}
+
+.sci-fmt-pill {
+  padding: 0.08rem 0.38rem;
+  border-radius: 4px;
+  background: rgba(52, 211, 153, 0.18);
+  color: #a7f3d0;
+  cursor: pointer;
+}
+
+[data-theme="light"] .sci-fmt-pill {
+  background: rgba(15, 42, 28, 0.14);
+  color: #064e3b;
+}
+
+.sci-hist-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.67rem;
+  color: rgba(167, 243, 208, 0.72);
+  margin-bottom: 0.32rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .sci-hist-line {
+  color: rgba(11, 38, 26, 0.72);
+}
+
+.sci-expr-input {
+  text-align: left;
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+}
+
+.sci-main-out {
+  margin-bottom: 0;
+  min-height: 46px;
+}
+
+.sci-main-out.is-err {
+  background: rgba(244, 63, 94, 0.16);
+  border-color: rgba(251, 113, 133, 0.45);
+}
+
+/* EQN / TABLE / VECT Subtabs & Coefficient Grids inside LCD */
+.sci-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  margin-bottom: 0.45rem;
+}
+
+.sci-subtabs button {
+  flex: 1 1 auto;
+  padding: 0.24rem 0.44rem;
+  border-radius: 5px;
+  border: 1px solid rgba(110, 231, 183, 0.25);
+  background: rgba(0, 0, 0, 0.28);
+  color: #a7f3d0;
+  font-family: inherit;
+  font-size: 0.66rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sci-subtabs button.active {
+  background: #fbbf24;
+  color: #1c0802;
+  border-color: #fef08a;
+}
+
+[data-theme="light"] .sci-subtabs button {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(15, 42, 28, 0.22);
+  color: #064e3b;
+}
+
+[data-theme="light"] .sci-subtabs button.active {
+  background: #ea580c;
+  color: #ffffff;
+}
+
+.sci-coeff-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.34rem;
+  margin-bottom: 0.48rem;
+}
+
+.sci-tbl-inputs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sci-tbl-inputs .sci-coeff-cell:nth-child(1),
+.sci-tbl-inputs .sci-coeff-cell:nth-child(2) {
+  grid-column: span 3;
+}
+
+.sci-coeff-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  padding: 0.26rem 0.44rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+.sci-coeff-cell.active {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.35);
+}
+
+[data-theme="light"] .sci-coeff-cell {
+  background: rgba(255, 255, 255, 0.52);
+  border-color: rgba(15, 42, 28, 0.2);
+}
+
+.sci-coeff-cell span {
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: #6ee7b7;
+  white-space: nowrap;
+}
+
+[data-theme="light"] .sci-coeff-cell span {
+  color: #14532d;
+}
+
+.sci-coeff-cell input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: #fef08a;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-align: right;
+  outline: none;
+}
+
+[data-theme="light"] .sci-coeff-cell input {
+  color: #052e16;
+}
+
+.sci-table-scroll {
+  max-height: 145px;
+  overflow-y: auto;
+  border-radius: 6px;
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+.sci-lcd-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+}
+
+.sci-lcd-table th,
+.sci-lcd-table td {
+  padding: 0.24rem 0.42rem;
+  border-bottom: 1px solid rgba(110, 231, 183, 0.14);
+  text-align: right;
+}
+
+.sci-lcd-table th {
+  position: sticky;
+  top: 0;
+  background: #0a1b15;
+  color: #fde047;
+  font-weight: 800;
+}
+
+[data-theme="light"] .sci-lcd-table th {
+  background: #c2d6b8;
+  color: #064e3b;
+}
+
+/* SHIFT / HYP / S⇔D Dedicated Key Styles */
+.calc-key.key-shift {
+  min-height: 34px;
+  font-size: 0.68rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ca8a04 0%, #854d0e 100%);
+  color: #fef9c3;
+  border-color: rgba(254, 240, 138, 0.5);
+  box-shadow: 0 3px 0 #422006, 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.calc-key.key-shift.active {
+  background: linear-gradient(180deg, #fde047 0%, #f59e0b 100%);
+  color: #1c0802;
+  box-shadow: 0 3px 0 #78350f, 0 0 14px rgba(253, 224, 71, 0.7);
+}
+
+.calc-key.key-hyp {
+  min-height: 34px;
+  font-size: 0.68rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #0f766e 0%, #115e59 100%);
+  color: #ccfbf1;
+  border-color: rgba(94, 234, 212, 0.45);
+  box-shadow: 0 3px 0 #042f2e, 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.calc-key.key-hyp.active {
+  background: linear-gradient(180deg, #2dd4bf 0%, #0d9488 100%);
+  color: #042f2e;
+  box-shadow: 0 3px 0 #134e4a, 0 0 12px rgba(45, 212, 191, 0.6);
+}
+
+.calc-key.key-sd {
+  min-height: 34px;
+  font-size: 0.72rem;
+  background: linear-gradient(180deg, #7c2d12 0%, #431407 100%);
+  color: #fde047;
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+/* ==========================================================================
+   Global Floating All-Mode Scientific Calculator Overlay Drawer
+   ========================================================================== */
+.floating-calc-drawer {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 980;
+  width: min(445px, calc(100vw - 20px));
+  max-height: calc(100dvh - 80px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 24px;
+  background: rgba(15, 7, 4, 0.96);
+  border: 2px solid rgba(253, 224, 71, 0.55);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.78);
+  overflow: hidden;
+  animation: floatCalcPop 0.18s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+[data-theme="light"] .floating-calc-drawer {
+  background: rgba(248, 250, 252, 0.98);
+  border-color: rgba(234, 88, 12, 0.55);
+  box-shadow: 0 22px 54px rgba(15, 23, 42, 0.32);
+}
+
+@keyframes floatCalcPop {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.floating-calc-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  background: linear-gradient(90deg, #431407, #7c2d12);
+  border-bottom: 1px solid rgba(253, 224, 71, 0.32);
+  color: #fffbeb;
+}
+
+.floating-calc-title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.floating-calc-title kbd {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.65rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fde047;
+}
+
+.floating-calc-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.floating-calc-link,
+.floating-calc-close {
+  padding: 0.24rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(0, 0, 0, 0.32);
+  color: #fffbeb;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.floating-calc-close:hover,
+.floating-calc-link:hover {
+  background: rgba(249, 115, 22, 0.45);
+}
+
+.floating-calc-body {
+  overflow-y: auto;
+  padding: 0.55rem;
+}
+
+.sci-master-device.is-floating-compact {
+  padding: 0.85rem 0.78rem 1.05rem;
+  border-radius: 20px;
+  box-shadow: 0 6px 0 #0b0503;
+}
+
+.sci-master-device.is-floating-compact .calc-key {
+  min-height: 36px;
+  font-size: 0.78rem;
+}
+
+.sci-master-device.is-floating-compact .calc-key.key-sci {
+  min-height: 40px;
+}
+
+@media (max-width: 1150px) {
+  .topbar-calc-lbl {
+    display: none;
+  }
+
+  .topbar-calc-chip {
+    padding: 0.38rem 0.58rem;
+  }
+}
+
+@media (max-width: 640px) {
+
+  .sci-mode-strip {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sci-mode-strip.chrono-mode-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .floating-calc-drawer {
+    left: 8px;
+    right: 8px;
+    bottom: calc(4.4rem + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-height: 78dvh;
+  }
+}
+
+/* ==========================================================================
+   3D Physical Scientific Stopwatch & Chronometer (TRIGVERSE CHRONO-FX 1000)
+   ========================================================================== */
+.sci-flagship-deck {
+  align-items: stretch;
+  margin-bottom: 2.15rem;
+}
+
+.sci-flagship-slot {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.chrono-outer-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 530px;
+  margin: 0 auto;
+}
+
+.chrono-outer-wrap.is-compact {
+  max-width: 100%;
+}
+
+/* Physical Top Crown Ring & Left/Right Angled Mechanical Plungers */
+.chrono-crown-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2.85rem;
+  height: 36px;
+  margin-bottom: -5px;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.chrono-outer-wrap.is-compact .chrono-crown-bar {
+  height: 28px;
+  gap: 2.15rem;
+}
+
+.chrono-lanyard-crown {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chrono-lanyard-crown .lanyard-ring {
+  width: 34px;
+  height: 18px;
+  border-radius: 999px 999px 10px 10px;
+  border: 3.5px solid #cbd5e1;
+  background: rgba(15, 23, 42, 0.25);
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.65),
+    0 2px 5px rgba(0, 0, 0, 0.55);
+}
+
+[data-theme="light"] .chrono-lanyard-crown .lanyard-ring {
+  border-color: #64748b;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.chrono-lanyard-crown .lanyard-neck {
+  width: 16px;
+  height: 11px;
+  margin-top: -2px;
+  background: linear-gradient(90deg, #475569 0%, #e2e8f0 48%, #334155 100%);
+  border-left: 1px solid #1e293b;
+  border-right: 1px solid #1e293b;
+}
+
+.chrono-pusher {
+  pointer-events: auto;
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.09s ease;
+}
+
+.chrono-pusher-left {
+  transform: rotate(-18deg) translateY(3px);
+}
+
+.chrono-pusher-right {
+  transform: rotate(18deg) translateY(3px);
+}
+
+.chrono-pusher-left:active,
+.chrono-pusher-left.pressed {
+  transform: rotate(-18deg) translateY(7px);
+}
+
+.chrono-pusher-right:active,
+.chrono-pusher-right.pressed {
+  transform: rotate(18deg) translateY(7px);
+}
+
+.chrono-pusher .pusher-cap {
+  width: 30px;
+  height: 11px;
+  border-radius: 6px 6px 3px 3px;
+  background: linear-gradient(180deg, #94a3b8 0%, #475569 100%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.55);
+}
+
+.chrono-pusher-right .pusher-cap {
+  background: linear-gradient(180deg, #fb923c 0%, #c2410c 100%);
+  border-color: rgba(254, 215, 170, 0.65);
+}
+
+.chrono-pusher .pusher-stem {
+  width: 13px;
+  height: 11px;
+  background: linear-gradient(90deg, #334155 0%, #cbd5e1 50%, #1e293b 100%);
+}
+
+/* Rounded Ergonomic Chronometer Casing */
+.calc-device.chrono-device {
+  flex: 1;
+  width: 100%;
+  max-width: 530px;
+  border-radius: 42px 42px 46px 46px;
+  position: relative;
+  z-index: 3;
+}
+
+.calc-device.chrono-device.is-floating-compact {
+  padding: 0.85rem 0.78rem 1.05rem;
+  border-radius: 28px 28px 32px 32px;
+  box-shadow: 0 6px 0 #0b0503;
+}
+
+.sci-mode-strip.chrono-mode-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Status Pill Inside Chronometer LCD */
+.chrono-run-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.08rem 0.44rem;
+  border-radius: 999px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.08);
+  color: #a7f3d0;
+}
+
+.chrono-run-pill.is-run {
+  background: rgba(16, 185, 129, 0.28);
+  color: #6ee7b7;
+  box-shadow: 0 0 10px rgba(52, 211, 153, 0.35);
+  animation: chronoPulse 1.1s ease-in-out infinite;
+}
+
+.chrono-run-pill.is-done {
+  background: rgba(244, 63, 94, 0.32);
+  color: #fecdd3;
+  animation: chronoPulse 0.65s ease-in-out infinite;
+}
+
+[data-theme="light"] .chrono-run-pill {
+  background: rgba(15, 42, 28, 0.12);
+  color: #064e3b;
+}
+
+[data-theme="light"] .chrono-run-pill.is-run {
+  background: #059669;
+  color: #ecfdf5;
+}
+
+[data-theme="light"] .chrono-run-pill.is-done {
+  background: #e11d48;
+  color: #fff1f2;
+}
+
+@keyframes chronoPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.62; }
+}
+
+/* Analog / Trigonometric Sweep Dial + 1/1000s Quartz Readout */
+.chrono-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem 0.62rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.26);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+[data-theme="light"] .chrono-hero-row {
+  background: rgba(255, 255, 255, 0.38);
+  border-color: rgba(15, 42, 28, 0.18);
+}
+
+.chrono-dial-box {
+  width: 86px;
+  height: 86px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6ee7b7;
+}
+
+.chrono-device.is-floating-compact .chrono-dial-box {
+  width: 70px;
+  height: 70px;
+}
+
+[data-theme="light"] .chrono-dial-box {
+  color: #064e3b;
+}
+
+.chrono-dial-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.chrono-digits-col {
+  flex: 1;
+  min-width: 0;
+  text-align: right;
+}
+
+.chrono-sub-caption {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(253, 224, 71, 0.85);
+  margin-bottom: 0.1rem;
+}
+
+[data-theme="light"] .chrono-sub-caption {
+  color: #7c2d12;
+}
+
+.chrono-main-digits {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.08;
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.06rem;
+}
+
+.chrono-hms {
+  font-size: clamp(1.75rem, 3.3vw, 2.42rem);
+  font-weight: 800;
+  color: #ecfdf5;
+  text-shadow: 0 0 14px rgba(52, 211, 153, 0.35);
+}
+
+.chrono-device.is-floating-compact .chrono-hms {
+  font-size: 1.68rem;
+}
+
+.chrono-ms {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 800;
+  color: #fde047;
+}
+
+[data-theme="light"] .chrono-hms {
+  color: #052e16;
+  text-shadow: none;
+}
+
+[data-theme="light"] .chrono-ms {
+  color: #b45309;
+}
+
+.chrono-live-sub {
+  margin-top: 0.18rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #a7f3d0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+[data-theme="light"] .chrono-live-sub {
+  color: #065f46;
+}
+
+/* Countdown Timer Progress Track */
+.chrono-progress-track {
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.38);
+  border: 1px solid rgba(110, 231, 183, 0.24);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.chrono-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399 0%, #fde047 65%, #fb923c 100%);
+  transition: width 0.1s linear;
+}
+
+/* Telemetry Hint & Lap Split Highlights */
+.chrono-empty-hint {
+  padding: 0.52rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(110, 231, 183, 0.25);
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgba(209, 250, 229, 0.88);
+}
+
+[data-theme="light"] .chrono-empty-hint {
+  background: rgba(255, 255, 255, 0.36);
+  border-color: rgba(15, 42, 28, 0.25);
+  color: #064e3b;
+}
+
+.chrono-lap-scroll {
+  max-height: 132px;
+}
+
+.sci-lcd-table tr.lap-best td {
+  color: #6ee7b7;
+  font-weight: 800;
+}
+
+.sci-lcd-table tr.lap-slow td {
+  color: #fda4af;
+}
+
+[data-theme="light"] .sci-lcd-table tr.lap-best td {
+  color: #047857;
+}
+
+[data-theme="light"] .sci-lcd-table tr.lap-slow td {
+  color: #be123c;
+}
+
+/* Sculpted 3D Stopwatch Action Triggers */
+.chrono-main-triggers {
+  grid-template-columns: 1.35fr 1.15fr 0.9fr;
+}
+
+.calc-key.chrono-btn-start {
+  min-height: 48px;
+  font-size: 0.92rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+  color: #ecfdf5;
+  border-color: rgba(110, 231, 183, 0.6);
+  box-shadow: 0 4px 0 #022c22, 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+.calc-key.chrono-btn-start.is-running {
+  background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
+  color: #1c0802;
+  border-color: #fef08a;
+  box-shadow: 0 4px 0 #451a03, 0 0 14px rgba(251, 191, 36, 0.45);
+}
+
+.calc-key.chrono-btn-lap {
+  min-height: 48px;
+  font-size: 0.86rem;
+  font-weight: 800;
+  background: linear-gradient(180deg, #0284c7 0%, #0369a1 100%);
+  color: #f0f9ff;
+  border-color: rgba(125, 211, 252, 0.55);
+  box-shadow: 0 4px 0 #082f49, 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+.calc-key.chrono-btn-reset {
+  min-height: 48px;
+  font-size: 0.84rem;
+}
+
+.chrono-context-keys:empty {
+  display: none;
+}
+
+.chrono-context-keys .calc-key.key-const.active {
+  background: linear-gradient(180deg, #fbbf24 0%, #ea580c 100%);
+  color: #1c0802;
+  border-color: #fef08a;
+}
+
+/* Live Ticking Topbar Badge & Left-Docked Floating Watch Drawer */
+.topbar-calc-chip.is-ticking {
+  border-color: #34d399;
+  box-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
+}
+
+.floating-calc-drawer.floating-watch-drawer {
+  left: 16px;
+  right: auto;
+  width: min(440px, calc(100vw - 20px));
+}
+
+@media (max-width: 640px) {
+  .floating-calc-drawer.floating-watch-drawer {
+    left: 8px;
+    right: 8px;
+    width: auto;
+  }
+
+  .chrono-hero-row {
+    gap: 0.6rem;
+    padding: 0.42rem 0.5rem;
+  }
+
+  .chrono-dial-box {
+    width: 68px;
+    height: 68px;
+  }
+
+  .chrono-main-triggers {
+    grid-template-columns: 1.2fr 1.1fr 0.9fr;
+  }
+}

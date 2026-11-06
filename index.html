@@ -24,7 +24,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
-  <link rel="stylesheet" href="styles.css?v=35" />
+  <link rel="stylesheet" href="styles.css?v=41" />
 </head>
 <body>
   <!-- ====================================================================
@@ -245,116 +245,300 @@
 
       <!-- VIEW 4: CALCULATOR & TRIANGLE SOLVER -->
       <section class="view-panel" id="view-solver">
-        <div class="section-card">
-          <h2>🧮 Exact &amp; High-Precision Trigonometric Angle Evaluator</h2>
-          <p style="margin-top:0">
-            Enter any positive or negative angle in Degrees, Radians, or Gradians to evaluate all six trigonometric ratios instantly:
-          </p>
-          <div class="sandbox-controls" style="margin-top:0.5rem;">
-            <div class="control-group">
-              <label for="calc-angle-val">Input Angle Value</label>
-              <input type="number" id="calc-angle-val" value="150" step="any" />
-            </div>
-            <div class="control-group">
-              <label for="calc-angle-unit">Angle Unit</label>
-              <select id="calc-angle-unit">
-                <option value="deg">Degrees (°)</option>
-                <option value="rad">Radians (rad)</option>
-                <option value="grad">Gradians (gon)</option>
-              </select>
-            </div>
-          </div>
-          <div id="calc-angle-output"></div>
+        <!-- FLAGSHIP SCIENTIFIC INSTRUMENTS PAIR: FULL ALL-MODE CALCULATOR + 1/1000s SCIENTIFIC STOPWATCH -->
+        <div class="calc-handheld-deck sci-flagship-deck">
+          <div id="master-sci-calc-mount" class="sci-flagship-slot"></div>
+          <div id="master-stopwatch-mount" class="sci-flagship-slot"></div>
         </div>
 
-        <div class="section-card">
-          <h2>🔄 Inverse Principal Value, Domain/Range &amp; General Trig Equation Solver</h2>
-          <p style="margin-top:0">
-            Select any inverse trigonometric function and enter $x$: checks exact <strong>Domain &amp; Principal Range</strong>, identifies exact $\pi$-fractions, and solves the companion trigonometric equation for both <strong>Principal Solutions in $[0^\circ, 360^\circ)$</strong> and the <strong>General Solution ($n \in \mathbb{Z}$)</strong>!
-          </p>
-          <div class="sandbox-controls" style="margin-top:0.5rem;">
-            <div class="control-group">
-              <label for="inv-eq-fn">Inverse Function &amp; Companion Equation</label>
-              <select id="inv-eq-fn">
-                <option value="asin">sin⁻¹(x)  &amp;  Solve sin θ = x</option>
-                <option value="acos">cos⁻¹(x)  &amp;  Solve cos θ = x</option>
-                <option value="atan">tan⁻¹(x)  &amp;  Solve tan θ = x</option>
-                <option value="acot">cot⁻¹(x)  &amp;  Solve cot θ = x</option>
-                <option value="asec">sec⁻¹(x)  &amp;  Solve sec θ = x</option>
-                <option value="acsc">cosec⁻¹(x) &amp; Solve cosec θ = x</option>
-              </select>
-            </div>
-            <div class="control-group">
-              <label for="inv-eq-val">Input Value x (e.g. -0.5, 0.7071068, 1, -1.73205)</label>
-              <input type="number" id="inv-eq-val" value="-0.5" step="any" />
-            </div>
-          </div>
-          <div id="inv-eq-output"></div>
-        </div>
+        <!-- TWIN HANDHELD SCIENTIFIC CALCULATORS DECK -->
+        <div class="calc-handheld-deck">
 
-        <div class="section-card">
-          <h2>🧪 Simplification of Expressions &amp; Proof of Identities Workbench</h2>
-          <p style="margin-top:0">
-            Select a classic <strong>Trigonometric or Inverse Trigonometric Simplification / Identity Proof</strong> problem, test any numerical input $x$ to watch $\text{LHS}(x) \equiv \text{RHS}(x)$ match to $8$ decimal places, and inspect the complete step-by-step algebraic derivation:
-          </p>
-          <div class="sandbox-controls" style="margin-top:0.5rem;">
-            <div class="control-group">
-              <label for="proof-preset-select">Simplification / Identity Proof Blueprint</label>
-              <select id="proof-preset-select">
-                <option value="0">1. [Simplification • Core] (sin⁴θ − cos⁴θ)/(sin²θ − cos²θ) ≡ 1</option>
-                <option value="1">2. [Simplification • Multi-Angle] (sin θ + sin 2θ)/(1 + cos θ + cos 2θ) ≡ tan θ</option>
-                <option value="2">3. [Simplification • Inverse Radical] tan⁻¹((√(1+x²) − 1)/x) ≡ ½ tan⁻¹(x)</option>
-                <option value="3">4. [Simplification • Inverse Phase] tan⁻¹((cos x − sin x)/(cos x + sin x)) ≡ π/4 − x</option>
-                <option value="4">5. [Proof • Core Identity] tan²θ − sin²θ ≡ tan²θ · sin²θ</option>
-                <option value="5">6. [Proof • Split-Angle Gem] tan 3x − tan 2x − tan x ≡ tan 3x · tan 2x · tan x</option>
-                <option value="6">7. [Proof • Phase-Shifted Squares] cos²x + cos²(x + π/3) + cos²(x − π/3) ≡ 3/2</option>
-                <option value="7">8. [Proof • Inverse Range-Bounded] 2 tan⁻¹(x) ≡ cos⁻¹((1 − x²)/(1 + x²))  (for x ≥ 0)</option>
-              </select>
-            </div>
-            <div class="control-group">
-              <label for="proof-test-x" id="lbl-proof-test-x">Test Input Value (θ in Degrees or x Real)</label>
-              <input type="number" id="proof-test-x" value="25" step="0.05" />
-            </div>
-          </div>
-          <div id="proof-workbench-output"></div>
-        </div>
+          <!-- ============================================================
+               CALCULATOR 1: SCIENTIFIC TRIGONOMETRIC ANGLE EVALUATOR
+               ============================================================ -->
+          <article class="calc-device" id="calc-device-angle" aria-label="Exact and High-Precision Trigonometric Angle Calculator">
+            <div class="calc-chassis-screws" aria-hidden="true"><span></span><span></span></div>
 
-        <div class="section-card">
-          <h2>📐 Universal Triangle Solver (Law of Cosines, Law of Sines &amp; Heron's Area)</h2>
-          <p style="margin-top:0">
-            Solve any valid right or oblique triangle $\triangle ABC$ and inspect its live scale drawing, area $\Delta$, circumradius $R$, and inradius $r$:
-          </p>
-          <div class="solver-grid">
-            <div>
-              <div class="sandbox-controls" style="grid-template-columns:minmax(0,1fr);margin-top:0;">
-                <div class="control-group">
-                  <label for="tri-mode">Known Measurements Mode</label>
-                  <select id="tri-mode">
-                    <option value="SSS">SSS — Three Sides (a, b, c)</option>
-                    <option value="SAS">SAS — Two Sides &amp; Included Angle (a, C°, b)</option>
-                    <option value="ASA">ASA — Two Angles &amp; Included Side (A°, c, B°)</option>
+            <!-- Hardware Brand Plate + 4-Cell Solar Strip -->
+            <header class="calc-brand-bar">
+              <div class="calc-brand-left">
+                <div class="calc-maker-row">
+                  <span class="calc-maker">TRIGVERSE</span>
+                  <span class="calc-model">fx-991EX</span>
+                </div>
+                <div class="calc-submodel">EXACT &amp; HIGH-PRECISION TRIG EVALUATOR</div>
+              </div>
+              <div class="calc-solar-wrap" aria-hidden="true">
+                <div class="calc-solar-panel">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+                <span class="calc-solar-label">SOLAR • TWO WAY POWER</span>
+              </div>
+            </header>
+
+            <!-- Recessed Backlit Natural-Display LCD Screen -->
+            <div class="calc-screen-bezel">
+              <div class="calc-lcd">
+                <div class="calc-lcd-status">
+                  <span class="calc-lcd-badge">MATH ▾</span>
+                  <div class="calc-lcd-modes" id="calc-lcd-unit-pills">
+                    <span class="active" data-lcd-u="deg">DEG</span>
+                    <span data-lcd-u="rad">RAD</span>
+                    <span data-lcd-u="grad">GRAD</span>
+                  </div>
+                  <span class="calc-lcd-quad" id="calc-lcd-quad">Q II • 150°</span>
+                </div>
+
+                <div class="calc-lcd-entry-row">
+                  <label for="calc-angle-val" class="calc-lcd-prompt" id="calc-lcd-prompt">θ =</label>
+                  <input type="text" inputmode="decimal" id="calc-angle-val" class="calc-lcd-input" value="150" autocomplete="off" spellcheck="false" />
+                  <span class="calc-lcd-unit-tag" id="calc-lcd-unit-tag">°</span>
+                  <select id="calc-angle-unit" class="calc-sr-only" aria-label="Angle Unit">
+                    <option value="deg">Degrees (°)</option>
+                    <option value="rad">Radians (rad)</option>
+                    <option value="grad">Gradians (gon)</option>
                   </select>
                 </div>
-                <div class="control-group">
-                  <label id="lbl-tri-1" for="tri-v1">Side a</label>
-                  <input type="number" id="tri-v1" value="5" step="0.1" min="0.1" />
-                </div>
-                <div class="control-group">
-                  <label id="lbl-tri-2" for="tri-v2">Side b</label>
-                  <input type="number" id="tri-v2" value="6" step="0.1" min="0.1" />
-                </div>
-                <div class="control-group">
-                  <label id="lbl-tri-3" for="tri-v3">Side c</label>
-                  <input type="number" id="tri-v3" value="7" step="0.1" min="0.1" />
-                </div>
+
+                <div class="calc-lcd-spotlight" id="calc-lcd-spotlight"></div>
+                <div id="calc-angle-output"></div>
               </div>
             </div>
-            <div>
-              <canvas class="canvas-stage" id="tri-solver-canvas"></canvas>
+
+            <!-- Tactile 3D Scientific Keypad -->
+            <div class="calc-keypad">
+              <!-- Row 1: Mode & System Control Pill Keys -->
+              <div class="calc-key-row calc-row-6">
+                <button type="button" class="calc-key key-mode active" data-angle-unit="deg" title="Degrees Mode">DEG</button>
+                <button type="button" class="calc-key key-mode" data-angle-unit="rad" title="Radians Mode">RAD</button>
+                <button type="button" class="calc-key key-mode" data-angle-unit="grad" title="Gradians Mode">GRAD</button>
+                <button type="button" class="calc-key key-fn-alt" data-angle-op="sign" title="Toggle Sign (±)">±</button>
+                <button type="button" class="calc-key key-del" data-angle-op="del" title="Backspace">⌫</button>
+                <button type="button" class="calc-key key-ac" data-angle-op="ac" title="All Clear">AC</button>
+              </div>
+
+              <!-- Row 2: Standard Angle Constant Keys -->
+              <div class="calc-key-row calc-row-6" id="calc-angle-preset-row">
+                <button type="button" class="calc-key key-const" data-angle-deg="0">0°</button>
+                <button type="button" class="calc-key key-const" data-angle-deg="30">30°</button>
+                <button type="button" class="calc-key key-const" data-angle-deg="45">45°</button>
+                <button type="button" class="calc-key key-const" data-angle-deg="60">60°</button>
+                <button type="button" class="calc-key key-const" data-angle-deg="90">90°</button>
+                <button type="button" class="calc-key key-const" data-angle-deg="180">180°</button>
+              </div>
+
+              <!-- Rows 3–4: 6 Raised Scientific Trig Function Keys -->
+              <div class="calc-key-row calc-row-3">
+                <button type="button" class="calc-key key-sci active" data-trig-focus="sin">
+                  <span class="key-legend">O / H</span>
+                  <span class="key-main">sin θ</span>
+                </button>
+                <button type="button" class="calc-key key-sci" data-trig-focus="cos">
+                  <span class="key-legend">A / H</span>
+                  <span class="key-main">cos θ</span>
+                </button>
+                <button type="button" class="calc-key key-sci" data-trig-focus="tan">
+                  <span class="key-legend">O / A</span>
+                  <span class="key-main">tan θ</span>
+                </button>
+              </div>
+              <div class="calc-key-row calc-row-3">
+                <button type="button" class="calc-key key-sci" data-trig-focus="csc">
+                  <span class="key-legend">1 / sin</span>
+                  <span class="key-main">csc θ</span>
+                </button>
+                <button type="button" class="calc-key key-sci" data-trig-focus="sec">
+                  <span class="key-legend">1 / cos</span>
+                  <span class="key-main">sec θ</span>
+                </button>
+                <button type="button" class="calc-key key-sci" data-trig-focus="cot">
+                  <span class="key-legend">1 / tan</span>
+                  <span class="key-main">cot θ</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- ==============================================================
+             CALCULATOR 3: CAS-89 SYMBOLIC IDENTITY & PROOF CALCULATOR
+             ============================================================== -->
+        <article class="calc-device calc-device-console" id="calc-device-proof" aria-label="CAS Symbolic Identity and Simplification Calculator">
+          <div class="calc-chassis-screws" aria-hidden="true"><span></span><span></span></div>
+
+          <header class="calc-brand-bar">
+            <div class="calc-brand-left">
+              <div class="calc-maker-row">
+                <span class="calc-maker">TRIGVERSE</span>
+                <span class="calc-model">CAS-89 TITANIUM</span>
+              </div>
+              <div class="calc-submodel">SYMBOLIC SIMPLIFICATION &amp; IDENTITY PROOF ENGINE (LHS ≡ RHS)</div>
+            </div>
+            <div class="calc-solar-wrap" aria-hidden="true">
+              <div class="calc-solar-panel">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <span class="calc-solar-label">CAS • SYMBOLIC ENGINE</span>
+            </div>
+          </header>
+
+          <div class="calc-console-body">
+            <!-- Left / Top CAS Control Keypad -->
+            <div class="calc-console-controls">
+              <div class="calc-console-label">PROGRAM MEMORY KEYS (P1 – P8)</div>
+              <div class="calc-key-row calc-row-4" id="proof-prog-keys">
+                <button type="button" class="calc-key key-sci active" data-proof-idx="0"><span class="key-legend">P1 • Core</span><span class="key-main">sin⁴−cos⁴</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="1"><span class="key-legend">P2 • 2θ</span><span class="key-main">sin+sin2θ</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="2"><span class="key-legend">P3 • Inv√</span><span class="key-main">tan⁻¹√</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="3"><span class="key-legend">P4 • Phase</span><span class="key-main">π/4 − x</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="4"><span class="key-legend">P5 • Core</span><span class="key-main">tan²−sin²</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="5"><span class="key-legend">P6 • 3x</span><span class="key-main">tan 3x</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="6"><span class="key-legend">P7 • ±π/3</span><span class="key-main">∑cos²=3/2</span></button>
+                <button type="button" class="calc-key key-sci" data-proof-idx="7"><span class="key-legend">P8 • Range</span><span class="key-main">2tan⁻¹x</span></button>
+              </div>
+
+              <div class="calc-field-slot" style="margin-top:0.65rem;">
+                <label for="proof-preset-select">Full Identity Blueprint Catalog</label>
+                <select id="proof-preset-select" class="calc-slot-select">
+                  <option value="0">1. [Simplification • Core] (sin⁴θ − cos⁴θ)/(sin²θ − cos²θ) ≡ 1</option>
+                  <option value="1">2. [Simplification • Multi-Angle] (sin θ + sin 2θ)/(1 + cos θ + cos 2θ) ≡ tan θ</option>
+                  <option value="2">3. [Simplification • Inverse Radical] tan⁻¹((√(1+x²) − 1)/x) ≡ ½ tan⁻¹(x)</option>
+                  <option value="3">4. [Simplification • Inverse Phase] tan⁻¹((cos x − sin x)/(cos x + sin x)) ≡ π/4 − x</option>
+                  <option value="4">5. [Proof • Core Identity] tan²θ − sin²θ ≡ tan²θ · sin²θ</option>
+                  <option value="5">6. [Proof • Split-Angle Gem] tan 3x − tan 2x − tan x ≡ tan 3x · tan 2x · tan x</option>
+                  <option value="6">7. [Proof • Phase-Shifted Squares] cos²x + cos²(x + π/3) + cos²(x − π/3) ≡ 3/2</option>
+                  <option value="7">8. [Proof • Inverse Range-Bounded] 2 tan⁻¹(x) ≡ cos⁻¹((1 − x²)/(1 + x²))  (for x ≥ 0)</option>
+                </select>
+              </div>
+
+              <div class="calc-field-slot" style="margin-top:0.55rem;">
+                <label for="proof-test-x" id="lbl-proof-test-x">Test Input Value (θ in Degrees or x Real)</label>
+                <input type="text" inputmode="decimal" id="proof-test-x" class="calc-slot-input" value="25" autocomplete="off" />
+              </div>
+
+              <div class="calc-key-row calc-row-5" style="margin-top:0.55rem;">
+                <button type="button" class="calc-key key-const" data-proof-step="-5">−5</button>
+                <button type="button" class="calc-key key-const" data-proof-step="-0.25">−0.25</button>
+                <button type="button" class="calc-key key-mode" data-proof-reset="1">↺ Default</button>
+                <button type="button" class="calc-key key-const" data-proof-step="0.25">+0.25</button>
+                <button type="button" class="calc-key key-const" data-proof-step="5">+5</button>
+              </div>
+            </div>
+
+            <!-- Right / Main Recessed CAS Display -->
+            <div class="calc-screen-bezel calc-console-screen">
+              <div class="calc-lcd">
+                <div class="calc-lcd-status">
+                  <span class="calc-lcd-badge">CAS • ALGEBRAIC VERIFIER</span>
+                  <span class="calc-lcd-quad">8-DIGIT FLOAT + EXACT PROOF</span>
+                </div>
+                <div id="proof-workbench-output"></div>
+              </div>
             </div>
           </div>
-          <div id="tri-solver-output"></div>
-        </div>
+        </article>
+
+        <!-- ==============================================================
+             CALCULATOR 4: GEO-FX GRAPHING TRIANGLE SOLVER CALCULATOR
+             ============================================================== -->
+        <article class="calc-device calc-device-console" id="calc-device-triangle" aria-label="Universal Triangle Graphing Calculator">
+          <div class="calc-chassis-screws" aria-hidden="true"><span></span><span></span></div>
+
+          <header class="calc-brand-bar">
+            <div class="calc-brand-left">
+              <div class="calc-maker-row">
+                <span class="calc-maker">TRIGVERSE</span>
+                <span class="calc-model">GEO-FX GRAPH</span>
+              </div>
+              <div class="calc-submodel">UNIVERSAL TRIANGLE SOLVER • SINE, COSINE &amp; HERON ENGINE</div>
+            </div>
+            <div class="calc-solar-wrap" aria-hidden="true">
+              <div class="calc-solar-panel">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <span class="calc-solar-label">VECTOR • GRAPHING LCD</span>
+            </div>
+          </header>
+
+          <div class="calc-console-body">
+            <!-- Left: Graphing Calculator Mode, Slots & Tactile Pad -->
+            <div class="calc-console-controls">
+              <div class="calc-console-label">SOLVER GEOMETRY MODE</div>
+              <div class="calc-key-row calc-row-3" id="tri-mode-keys">
+                <button type="button" class="calc-key key-mode active" data-tri-mode="SSS">SSS (a,b,c)</button>
+                <button type="button" class="calc-key key-mode" data-tri-mode="SAS">SAS (a,C°,b)</button>
+                <button type="button" class="calc-key key-mode" data-tri-mode="ASA">ASA (A°,c,B°)</button>
+              </div>
+              <select id="tri-mode" class="calc-sr-only" aria-label="Known Measurements Mode">
+                <option value="SSS">SSS — Three Sides (a, b, c)</option>
+                <option value="SAS">SAS — Two Sides &amp; Included Angle (a, C°, b)</option>
+                <option value="ASA">ASA — Two Angles &amp; Included Side (A°, c, B°)</option>
+              </select>
+
+              <div class="calc-key-row calc-row-4" style="margin-top:0.5rem;">
+                <button type="button" class="calc-key key-const" data-tri-preset="3,4,5,SSS" title="3-4-5 Right Triangle">3-4-5 ∟</button>
+                <button type="button" class="calc-key key-const" data-tri-preset="5,6,7,SSS" title="5-6-7 Acute Triangle">5-6-7</button>
+                <button type="button" class="calc-key key-const" data-tri-preset="6,6,6,SSS" title="Equilateral Triangle">Equilat</button>
+                <button type="button" class="calc-key key-const" data-tri-preset="30,10,60,ASA" title="30°-60°-90° Triangle">30-60-90</button>
+              </div>
+
+              <div class="calc-tri-slots">
+                <div class="calc-field-slot active" data-tri-slot="tri-v1">
+                  <label id="lbl-tri-1" for="tri-v1">Side a</label>
+                  <input type="text" inputmode="decimal" id="tri-v1" class="calc-slot-input" value="5" autocomplete="off" />
+                </div>
+                <div class="calc-field-slot" data-tri-slot="tri-v2">
+                  <label id="lbl-tri-2" for="tri-v2">Side b</label>
+                  <input type="text" inputmode="decimal" id="tri-v2" class="calc-slot-input" value="6" autocomplete="off" />
+                </div>
+                <div class="calc-field-slot" data-tri-slot="tri-v3">
+                  <label id="lbl-tri-3" for="tri-v3">Side c</label>
+                  <input type="text" inputmode="decimal" id="tri-v3" class="calc-slot-input" value="7" autocomplete="off" />
+                </div>
+              </div>
+
+              <!-- Compact Tactile Numeric Pad targeting active triangle input slot -->
+              <div class="calc-key-row calc-row-4" style="margin-top:0.55rem;">
+                <button type="button" class="calc-key key-num" data-tri-digit="7">7</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="8">8</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="9">9</button>
+                <button type="button" class="calc-key key-del" data-tri-op="del">⌫</button>
+              </div>
+              <div class="calc-key-row calc-row-4">
+                <button type="button" class="calc-key key-num" data-tri-digit="4">4</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="5">5</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="6">6</button>
+                <button type="button" class="calc-key key-fn-alt" data-tri-op="next">NEXT ▾</button>
+              </div>
+              <div class="calc-key-row calc-row-4">
+                <button type="button" class="calc-key key-num" data-tri-digit="1">1</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="2">2</button>
+                <button type="button" class="calc-key key-num" data-tri-digit="3">3</button>
+                <button type="button" class="calc-key key-num" data-tri-digit=".">.</button>
+              </div>
+              <div class="calc-key-row calc-row-4">
+                <button type="button" class="calc-key key-num" data-tri-digit="0">0</button>
+                <button type="button" class="calc-key key-const" data-tri-op="dec">−1</button>
+                <button type="button" class="calc-key key-const" data-tri-op="inc">+1</button>
+                <button type="button" class="calc-key key-eq" data-tri-op="eval">SOLVE</button>
+              </div>
+            </div>
+
+            <!-- Right: Recessed Graphing Calculator Vector Display -->
+            <div class="calc-screen-bezel calc-console-screen">
+              <div class="calc-lcd calc-lcd-graph">
+                <div class="calc-lcd-status">
+                  <span class="calc-lcd-badge">GRAPH • △ABC SCALE PLOT</span>
+                  <span class="calc-lcd-quad" id="tri-lcd-mode-badge">MODE: SSS</span>
+                </div>
+                <canvas class="canvas-stage calc-graph-canvas" id="tri-solver-canvas"></canvas>
+                <div id="tri-solver-output"></div>
+              </div>
+            </div>
+          </div>
+        </article>
       </section>
 
       <!-- VIEW 5: MASTER FORMULA CATEGORY (BEGINNING TO END: CH 1 -> CH 44) -->
@@ -517,19 +701,21 @@
   </nav>
 
   <!-- Application Scripts (defer preserves execution order right after KaTeX defer scripts!) -->
-  <script defer src="curriculum-ch1-5.js?v=35"></script>
-  <script defer src="curriculum-ch6-10.js?v=35"></script>
-  <script defer src="curriculum-ultra7.js?v=35"></script>
-  <script defer src="curriculum-class11a.js?v=35"></script>
-  <script defer src="curriculum-class11b-12.js?v=35"></script>
-  <script defer src="curriculum-class12-inverse-eq.js?v=35"></script>
-  <script defer src="curriculum-part2.js?v=35"></script>
-  <script defer src="formulas-complete.js?v=35"></script>
-  <script defer src="curriculum-master-summary.js?v=35"></script>
-  <script defer src="lectures-bilingual.js?v=35"></script>
-  <script defer src="youtube-200-library.js?v=35"></script>
-  <script defer src="visualizers.js?v=35"></script>
-  <script defer src="mcq-generator.js?v=35"></script>
-  <script defer src="app.js?v=35"></script>
+  <script defer src="curriculum-ch1-5.js?v=41"></script>
+  <script defer src="curriculum-ch6-10.js?v=41"></script>
+  <script defer src="curriculum-ultra7.js?v=41"></script>
+  <script defer src="curriculum-class11a.js?v=41"></script>
+  <script defer src="curriculum-class11b-12.js?v=41"></script>
+  <script defer src="curriculum-class12-inverse-eq.js?v=41"></script>
+  <script defer src="curriculum-part2.js?v=41"></script>
+  <script defer src="formulas-complete.js?v=41"></script>
+  <script defer src="curriculum-master-summary.js?v=41"></script>
+  <script defer src="lectures-bilingual.js?v=41"></script>
+  <script defer src="youtube-200-library.js?v=41"></script>
+  <script defer src="visualizers.js?v=41"></script>
+  <script defer src="mcq-generator.js?v=41"></script>
+  <script defer src="scientific-calculator.js?v=41"></script>
+  <script defer src="scientific-stopwatch.js?v=41"></script>
+  <script defer src="app.js?v=41"></script>
 </body>
 </html>
