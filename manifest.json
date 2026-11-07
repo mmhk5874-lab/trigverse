@@ -1,6 +1,6 @@
 {
-  "name": "TrigVerse — Interactive Trigonometry Quest",
-  "short_name": "TrigVerse",
+  "name": "MathsVerse — Easy & Friendly",
+  "short_name": "MathsVerse",
   "description": "44-Chapter Interactive Trigonometry RPG Quest, Complete Beginning-to-End Formula Category, 200 Bilingual Video Lectures (English & Urdu/Hindi), 14 Touch Canvas Labs & Triangle Solver.",
   "start_url": "./index.html",
   "scope": "./",
@@ -11,16 +11,16 @@
   "categories": ["education", "games", "productivity"],
   "icons": [
     {
-      "src": "favicon.png",
+      "src": "favicon.png?v=44",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "logo.png",
+      "src": "logo.png?v=44",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "shortcuts": [
@@ -28,31 +28,31 @@
       "name": "Quest Roadmap",
       "short_name": "Quest",
       "url": "./index.html#roadmap",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "favicon.png?v=44", "sizes": "192x192" }]
     },
     {
       "name": "All Trigonometry Formulas",
       "short_name": "Formulas",
       "url": "./index.html#vault",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "favicon.png?v=44", "sizes": "192x192" }]
     },
     {
       "name": "200 Video Lectures",
       "short_name": "Lectures",
       "url": "./index.html#lectures",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "favicon.png?v=44", "sizes": "192x192" }]
     },
     {
       "name": "14 Interactive Labs",
       "short_name": "Labs",
       "url": "./index.html#playground",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "favicon.png?v=44", "sizes": "192x192" }]
     },
     {
       "name": "Calculator & Solver",
       "short_name": "Solver",
       "url": "./index.html#solver",
-      "icons": [{ "src": "favicon.png", "sizes": "192x192" }]
+      "icons": [{ "src": "favicon.png?v=44", "sizes": "192x192" }]
     }
   ]
 }

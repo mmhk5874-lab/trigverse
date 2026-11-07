@@ -90,7 +90,9 @@
     JSON.parse(localStorage.getItem(STORAGE_KEY_RPG) || "{}")
   );
   let currentModuleId = MODULES[0]?.id || "ch-1-intro";
-  let currentViewId = "roadmap";
+  let currentViewId = "verses";
+  let currentVerseCategory = "ALL";
+  let currentVerseSearch = "";
   let activeLessonRedraw = null;
   let activeHubRedraw = null;
 
@@ -294,6 +296,7 @@
     const txt = document.getElementById("progress-text");
     const bar = document.getElementById("progress-bar-fill");
     const heroStat = document.getElementById("stat-completed");
+    const versesStat = document.getElementById("verses-kpi-mastered");
     const hudLv = document.getElementById("hud-level");
     const hudStreak = document.getElementById("hud-streak");
     const hudGems = document.getElementById("hud-gems");
@@ -305,6 +308,7 @@
     if (txt) txt.textContent = `${count}/${total} Mastered (${pct}%)`;
     if (bar) bar.style.width = `${pct}%`;
     if (heroStat) heroStat.textContent = `${count}/${total}`;
+    if (versesStat) versesStat.textContent = `${count}/${total}`;
     if (hudLv) hudLv.textContent = lvLabel;
     if (hudStreak) hudStreak.textContent = streakVal;
     if (hudGems) hudGems.textContent = `${totalGems}`;
@@ -370,25 +374,224 @@
   }
 
   /* ------------------------------------------------------------------------
+     MathVerse Start Portal (13 Mathematics Universes + Verse Preview Modal)
+     ------------------------------------------------------------------------ */
+  function closeVersePreviewModal() {
+    const modal = document.getElementById("verse-preview-modal");
+    if (modal && !modal.hidden) {
+      modal.hidden = true;
+      const raidModal = document.getElementById("rpg-battle-modal");
+      if (!raidModal || raidModal.hidden) {
+        document.body.style.overflow = "";
+      }
+    }
+  }
+
+  function openVersePreviewModal(verseId) {
+    const catalog = window.MATH_VERSES_CATALOG;
+    if (!catalog) return;
+    const verse = catalog.verses.find((v) => v.id === verseId);
+    if (!verse) return;
+    if (verse.isLive) {
+      switchView("roadmap");
+      return;
+    }
+
+    const modal = document.getElementById("verse-preview-modal");
+    const catEl = document.getElementById("verse-modal-cat");
+    const bodyEl = document.getElementById("verse-modal-body");
+    if (!modal || !bodyEl) return;
+
+    if (catEl) {
+      catEl.textContent = `${verse.categoryLabel} • ${verse.plannedChapters} Planned Chapters`;
+    }
+
+    bodyEl.innerHTML = `
+      <div class="verse-modal-hero" style="--verse-accent:${verse.accent};--verse-soft:${verse.accentSoft};">
+        <div class="verse-modal-glyph">${verse.svgIcon || verse.glyph}</div>
+        <div class="verse-modal-head-copy">
+          <div class="verse-modal-badges">
+            <span class="verse-symbol-pill">${verse.symbolBadge}</span>
+            <span class="verse-coming-pill">✨ Easy &amp; Friendly Preview</span>
+          </div>
+          <h2 class="verse-modal-title" id="verse-modal-title">
+            <span>${verse.subject}</span>
+            <small>(${verse.subtitle})</small>
+          </h2>
+          <p class="verse-modal-tagline">${verse.tagline}</p>
+        </div>
+      </div>
+
+      <div class="verse-modal-section">
+        <h3>🗺️ ${verse.subject} Learning Roadmap</h3>
+        <div class="verse-pillars-grid">
+          ${(verse.pillars || []).map((p) => `<div class="verse-pillar-item">${p}</div>`).join("")}
+        </div>
+      </div>
+
+      <div class="verse-modal-section">
+        <h3>📜 Essential Core Formulas Preview</h3>
+        <div class="verse-formulas-grid">
+          ${(verse.formulas || [])
+            .map(
+              (f) => `
+            <div class="verse-formula-box">
+              <div class="verse-formula-name">${f.name}</div>
+              <div class="verse-formula-tex">${f.tex}</div>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+      </div>
+
+      <div class="verse-modal-actions">
+        <button type="button" class="verses-cta-primary" data-modal-go="roadmap">
+          🚀 Open Trigonometry Quest (44 Live Chapters) →
+        </button>
+        <button type="button" class="verses-cta-secondary" data-modal-go="solver">
+          🧮 Open Scientific Calculator &amp; Solver
+        </button>
+        <button type="button" class="verse-modal-back-btn" id="btn-modal-back-verses">
+          ← Back to MathsVerse
+        </button>
+      </div>
+    `;
+
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    typesetMath(bodyEl);
+
+    bodyEl.querySelectorAll("[data-modal-go]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        triggerHaptic(12);
+        const dest = btn.dataset.modalGo;
+        closeVersePreviewModal();
+        switchView(dest);
+      });
+    });
+    document.getElementById("btn-modal-back-verses")?.addEventListener("click", () => {
+      triggerHaptic(10);
+      closeVersePreviewModal();
+    });
+  }
+
+  function renderVersesPortal() {
+    const catalog = window.MATH_VERSES_CATALOG;
+    const grid = document.getElementById("verses-grid");
+    if (!catalog || !grid) return;
+
+    grid.innerHTML = catalog.verses
+      .map(
+        (v) => `
+          <button
+            type="button"
+            class="mv-cosmic-tile ${v.isLive ? "mv-tile-live" : ""}"
+            data-verse-id="${v.id}"
+            aria-label="${v.subject} — ${v.subtitle}"
+          >
+            <div class="mv-tile-icon-wrap">
+              ${v.svgIcon || `<span>${v.glyph}</span>`}
+            </div>
+            <div class="mv-tile-title">${v.subject}</div>
+            <div class="mv-tile-sub">${v.subtitle}</div>
+          </button>
+        `
+      )
+      .join("");
+
+    grid.querySelectorAll(".mv-cosmic-tile").forEach((tile) => {
+      tile.addEventListener("click", () => {
+        triggerHaptic(12);
+        const vid = tile.dataset.verseId;
+        if (vid === "trigverse") {
+          switchView("roadmap");
+        } else if (vid === "arithmetic") {
+          switchView("arithmetic");
+        } else {
+          openVersePreviewModal(vid);
+        }
+      });
+    });
+  }
+
+  function initVersesPortal() {
+    renderVersesPortal();
+
+    document.getElementById("btn-trig-back-verses")?.addEventListener("click", () => {
+      triggerHaptic(10);
+      switchView("verses");
+    });
+    document.querySelectorAll("[data-arith-back-verses]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        triggerHaptic(10);
+        switchView("verses");
+      });
+    });
+    document.getElementById("btn-close-verse-modal")?.addEventListener("click", () => {
+      triggerHaptic(10);
+      closeVersePreviewModal();
+    });
+    document.getElementById("verse-preview-modal")?.addEventListener("click", (e) => {
+      if (e.target.id === "verse-preview-modal") {
+        closeVersePreviewModal();
+      }
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeVersePreviewModal();
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------------
      View Switching (Desktop Top Tabs + Mobile Bottom Nav + History Back)
      ------------------------------------------------------------------------ */
   function switchView(viewId, fromOpenModule = false, skipPushHistory = false) {
     currentViewId = viewId;
+    closeVersePreviewModal();
     const raidModal = document.getElementById("rpg-battle-modal");
     if (raidModal && !raidModal.hidden) {
       closeBossRaid();
     } else {
       document.body.style.overflow = "";
     }
-    document.querySelectorAll(".view-panel").forEach((p) => p.classList.remove("active"));
-    document.querySelectorAll(".nav-tab").forEach((t) => {
-      t.classList.toggle("active", t.dataset.view === viewId);
-    });
+
+    const onPortal = viewId === "verses";
+    const onArithmetic = viewId === "arithmetic";
+    document.body.classList.toggle("on-verses-portal", onPortal);
+    document.body.classList.toggle("on-arithmetic-verse", onArithmetic);
+
+    const metaTheme = document.getElementById("meta-theme-color");
+    if (metaTheme) {
+      metaTheme.setAttribute("content", onPortal ? "#06061e" : onArithmetic ? "#500724" : "#2b0e04");
+    }
+
+    const trigBar = document.getElementById("trig-subgroups-bar");
+    if (trigBar) trigBar.hidden = onPortal || onArithmetic;
+    const arithBar = document.getElementById("arith-subgroups-bar");
+    if (arithBar) arithBar.hidden = !onArithmetic;
+
+    const brandTitle = document.getElementById("brand-title-text");
+    const brandSub = document.getElementById("brand-subtitle-text");
+    if (brandTitle) brandTitle.textContent = "MathsVerse";
+    if (brandSub) {
+      brandSub.textContent = onPortal
+        ? "Easy & Friendly"
+        : onArithmetic
+          ? "Easy & Friendly • Arithmetic"
+          : "Easy & Friendly • Trigonometry";
+    }
 
     const isSubView = viewId === "lesson" || viewId === "summary";
-    const mobileTabMatch = isSubView ? "roadmap" : viewId;
+    const activeTabMatch = isSubView ? "roadmap" : viewId;
+
+    document.querySelectorAll(".view-panel").forEach((p) => p.classList.remove("active"));
+    document.querySelectorAll(".nav-tab").forEach((t) => {
+      t.classList.toggle("active", t.dataset.view === activeTabMatch);
+    });
     document.querySelectorAll(".mobile-nav-btn").forEach((b) => {
-      b.classList.toggle("active", b.dataset.view === mobileTabMatch);
+      b.classList.toggle("active", b.dataset.view === activeTabMatch);
     });
 
     const backBtn = document.getElementById("mobile-back-btn");
@@ -408,7 +611,11 @@
       }
     }
 
-    if (viewId === "lesson" && !fromOpenModule) {
+    if (viewId === "verses") {
+      renderVersesPortal();
+    } else if (viewId === "arithmetic") {
+      window.ARITH_QUEST?.openSubTab("roadmap");
+    } else if (viewId === "lesson" && !fromOpenModule) {
       if (!isModuleUnlocked(currentModuleId)) {
         currentModuleId = getFrontierModuleId();
         openModule(currentModuleId);
@@ -568,7 +775,7 @@
       animal: "Celestial Crest Boss",
       realmName: "Grandmaster Synthesis Citadel",
       shortTag: "Synthesis Citadel",
-      img: "logo.png",
+      img: "logo.png?v=44",
       side: "side-left",
       quote: "Final Citadel! Conquer all 4 Trigonometry Groups to claim Grandmaster Glory!",
       vaultFilter: "Ch 44"
@@ -646,8 +853,9 @@
   let selectedPopoverId = null;
   let popoverInitialized = false;
   let openRoadmapLectureTierId = null;
-  let globalLectureLangMode = "en"; // "en" | "ur"
+  let globalLectureLangMode = "en"; // "en" | "ur" | "trick"
   let currentLecturesTierFilter = "ALL";
+  let currentTrickPlatformFilter = "ALL"; // "ALL" | "tiktok" | "insta" | "yt-short"
 
   function getFrontierModuleId() {
     const firstIncomplete = MODULES.find((m) => !completedSet.has(m.id));
@@ -809,11 +1017,11 @@
                   <h4 class="duo-popover-title">${m.title}</h4>
                   <p class="duo-popover-desc">${m.subtitle}</p>
                   <div class="duo-popover-btn-grid">
-                    <button type="button" class="duo-popover-raid-btn" data-raid-id="${m.id}">
-                      🎮 ${isDone ? "REPLAY 15 MCQs" : "PLAY 15 MCQs (10 TO PASS)"}
-                    </button>
                     <button type="button" class="duo-popover-start-btn" data-launch-id="${m.id}">
                       📖 ${btnVerb} LESSON
+                    </button>
+                    <button type="button" class="duo-popover-raid-btn" data-raid-id="${m.id}">
+                      🎮 ${isDone ? "REPLAY 15 MCQs" : "PLAY 15 MCQs (10 TO PASS)"}
                     </button>
                   </div>
                 </div>
@@ -2804,6 +3012,7 @@
       <div class="lecture-lang-bar" data-local-lang-bar="1">
         <button type="button" class="lecture-lang-pill ${globalLectureLangMode === "en" ? "active" : ""}" data-set-lang="en">🇬🇧 English</button>
         <button type="button" class="lecture-lang-pill ${globalLectureLangMode === "ur" ? "active" : ""}" data-set-lang="ur">🇵🇰 اردو</button>
+        <button type="button" class="lecture-lang-pill lecture-trick-pill ${globalLectureLangMode === "trick" ? "active" : ""}" data-set-lang="trick">⚡ Trick</button>
       </div>
     `;
   }
@@ -3052,6 +3261,7 @@
   }
 
   function syncAllLectureLanguageGrids() {
+    const isTrick = globalLectureLangMode === "trick";
     const cls = getDualGridModeClass();
     document.querySelectorAll("[data-dual-grid]").forEach((grid) => {
       grid.classList.remove("mode-en", "mode-ur");
@@ -3059,8 +3269,17 @@
     });
     const enSec = document.getElementById("yt200-en-section");
     const urSec = document.getElementById("yt200-ur-section");
-    if (enSec) enSec.style.display = globalLectureLangMode === "ur" ? "none" : "block";
-    if (urSec) urSec.style.display = globalLectureLangMode === "en" ? "none" : "block";
+    const trickSec = document.getElementById("yt200-trick-section");
+    const spotlightEl = document.getElementById("lectures-youtube-spotlight");
+    const realmsEl = document.getElementById("lectures-realms-mount");
+    const chaptersEl = document.getElementById("lectures-chapters-mount");
+
+    if (enSec) enSec.style.display = globalLectureLangMode === "en" ? "block" : "none";
+    if (urSec) urSec.style.display = globalLectureLangMode === "ur" ? "block" : "none";
+    if (trickSec) trickSec.style.display = isTrick ? "block" : "none";
+    if (spotlightEl) spotlightEl.style.display = isTrick ? "none" : "";
+    if (realmsEl) realmsEl.style.display = isTrick ? "none" : "";
+    if (chaptersEl) chaptersEl.style.display = isTrick ? "none" : "";
 
     document.querySelectorAll("[data-set-lang], #lecture-hub-lang-bar [data-lang-mode]").forEach((btn) => {
       const m = btn.dataset.setLang || btn.dataset.langMode;
@@ -3076,6 +3295,13 @@
       btn.addEventListener("click", () => {
         globalLectureLangMode = btn.dataset.setLang;
         syncAllLectureLanguageGrids();
+        if (globalLectureLangMode === "trick") {
+          const lecPanel = document.getElementById("view-lectures");
+          if (lecPanel && !lecPanel.classList.contains("active")) {
+            switchView("lectures");
+          }
+          document.getElementById("yt200-trick-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       });
     });
 
@@ -3220,6 +3446,67 @@
     `;
   }
 
+  function buildShortTrickCardHtml(item) {
+    const lvNum = item.tierId ? item.tierId.split("-")[1] : "1";
+    const plat = item.platform || "yt-short";
+    const platMeta =
+      plat === "tiktok"
+        ? { cls: "trick-badge-tiktok", label: `🎵 TikTok #${item.num}` }
+        : plat === "insta"
+          ? { cls: "trick-badge-insta", label: `📸 Insta Reel #${item.num}` }
+          : { cls: "trick-badge-yt", label: `▶️ YT Short #${item.num}` };
+    const safeTitle = String(item.title || "Trigonometry Short Trick").replace(/"/g, "&quot;");
+    const thumbUrl = `https://i.ytimg.com/vi/${encodeURIComponent(item.id)}/hqdefault.jpg`;
+    const shortsUrl = `https://www.youtube.com/shorts/${encodeURIComponent(item.id)}`;
+    const tiktokUrl = `https://www.tiktok.com/search?q=${encodeURIComponent(item.tiktokQuery || item.title)}`;
+    const instaUrl = `https://www.instagram.com/explore/tags/${encodeURIComponent(item.instaTag || "mathtricks")}/`;
+
+    return `
+      <div class="yt-video-card yt200-card trick-short-card">
+        <div>
+          <div class="yt200-card-top">
+            <span class="yt200-num-pill ${platMeta.cls}">${platMeta.label}</span>
+            <span class="yt200-lv-pill">⚡ Lv ${lvNum}</span>
+          </div>
+          <div class="yt-player-slot" data-yt-slot="${item.id}">
+            <button type="button" class="yt-thumb-trigger" data-yt-play="${item.id}" data-yt-title="${safeTitle}" aria-label="Play Short Trick: ${safeTitle}">
+              <img src="${thumbUrl}" alt="${safeTitle}" class="yt-thumb-img" loading="lazy" />
+              <div class="yt-thumb-gradient"></div>
+              <span class="trick-duration-chip">⚡ 60s TRICK</span>
+              <div class="yt-play-badge">
+                <svg viewBox="0 0 68 48" width="52" height="37" aria-hidden="true">
+                  <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#ff0000"/>
+                  <path d="M 45,24 27,14 27,34" fill="#ffffff"/>
+                </svg>
+              </div>
+              <span class="yt-channel-chip">🎬 ${item.channel}</span>
+            </button>
+          </div>
+          <div class="yt200-title">${item.title}</div>
+          ${
+            item.tip
+              ? `<div class="trick-tip-box"><span class="trick-tip-label">💡 Trick:</span> <span class="trick-tip-math">\\(${item.tip}\\)</span></div>`
+              : ""
+          }
+        </div>
+        <div class="yt-action-bar trick-action-bar">
+          <button type="button" class="yt-inline-play-btn" data-yt-play-btn="${item.id}" data-yt-title="${safeTitle}">
+            ▶️ Play Trick
+          </button>
+          <a href="${shortsUrl}" target="_blank" rel="noopener noreferrer" class="yt-ext-link trick-ext-yt" title="Watch on YouTube Shorts">
+            ↗ YT Short
+          </a>
+          <a href="${tiktokUrl}" target="_blank" rel="noopener noreferrer" class="yt-ext-link trick-ext-tiktok" title="Find on TikTok">
+            🎵 TikTok
+          </a>
+          <a href="${instaUrl}" target="_blank" rel="noopener noreferrer" class="yt-ext-link trick-ext-insta" title="Explore on Instagram Reels">
+            📸 Insta
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
   let activeSpotlightModId = null;
 
   function renderLecturesTab() {
@@ -3232,35 +3519,45 @@
     const db = window.TRIG_BILINGUAL_LECTURES || { realms: {}, chapters: {} };
     const ytDb = window.TRIG_YOUTUBE_LECTURES || { realms: {}, chapters: {} };
     const yt200Db = window.TRIG_YOUTUBE_LIBRARY_200 || { en: [], urHi: [] };
+    const tricksDb = window.TRIG_SHORT_TRICKS || [];
     const q = (document.getElementById("lectures-search-input")?.value || "").trim().toLowerCase();
     const frontierMod = MODULES[getUnlockedMaxIndex()] || MODULES[0];
     const frontierShort = frontierMod.grade.split("•")[0].trim();
 
-    // Render 200-Video YouTube Mega Vault (100 English + 100 Urdu & Hindi)
+    // Render 200-Video YouTube Mega Vault (100 English + 100 Urdu & Hindi) + Short Video Tricks
     if (yt200Mount) {
       const matchItem = (v) => {
         if (currentLecturesTierFilter !== "ALL" && v.tierId !== currentLecturesTierFilter) return false;
         if (!q) return true;
-        const hay = `${v.title} ${v.channel} #${v.num} ${v.tierId}`.toLowerCase();
+        const hay = `${v.title} ${v.channel} ${v.platform || ""} ${v.tip || ""} #${v.num} ${v.tierId}`.toLowerCase();
         return hay.includes(q);
       };
       const enFiltered = (yt200Db.en || []).filter(matchItem);
       const urFiltered = (yt200Db.urHi || []).filter(matchItem);
+      const tricksBaseFiltered = tricksDb.filter(matchItem);
+      const tiktokCount = tricksBaseFiltered.filter((t) => t.platform === "tiktok").length;
+      const instaCount = tricksBaseFiltered.filter((t) => t.platform === "insta").length;
+      const ytShortCount = tricksBaseFiltered.filter((t) => t.platform === "yt-short").length;
+      const tricksFiltered =
+        currentTrickPlatformFilter === "ALL"
+          ? tricksBaseFiltered
+          : tricksBaseFiltered.filter((t) => t.platform === currentTrickPlatformFilter);
 
       yt200Mount.innerHTML = `
         <div class="yt200-summary-bar">
           <div style="display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;">
-            <span class="lecture-level-tag">🎬 Total Library: ${(yt200Db.en || []).length} English + ${(yt200Db.urHi || []).length} Urdu/Hindi = ${(yt200Db.en || []).length + (yt200Db.urHi || []).length} YouTube Lectures</span>
-            <span style="font-size:0.84rem;color:var(--text-secondary);">Showing <strong>${enFiltered.length}</strong> English &amp; <strong>${urFiltered.length}</strong> Urdu/Hindi videos</span>
+            <span class="lecture-level-tag">🎬 Library: ${(yt200Db.en || []).length} EN + ${(yt200Db.urHi || []).length} UR/HI + ${tricksDb.length} ⚡ Short Tricks</span>
+            <span style="font-size:0.84rem;color:var(--text-secondary);">Showing <strong>${enFiltered.length}</strong> EN • <strong>${urFiltered.length}</strong> UR/HI • <strong>${tricksFiltered.length}</strong> Short Tricks</span>
           </div>
           <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
             <button type="button" class="lecture-voice-btn" data-scroll-yt-sec="yt200-en-section">🇬🇧 100 English Videos ↓</button>
-            <button type="button" class="lecture-voice-btn" data-scroll-yt-sec="yt200-ur-section">🇵🇰🇮🇳 100 Urdu + Hindi Videos ↓</button>
+            <button type="button" class="lecture-voice-btn" data-scroll-yt-sec="yt200-ur-section">🇵🇰🇮🇳 100 Urdu + Hindi ↓</button>
+            <button type="button" class="lecture-voice-btn trick-summary-btn" data-scroll-yt-sec="yt200-trick-section">⚡ Trick Shorts (${tricksBaseFiltered.length}) ↓</button>
             <button type="button" class="lecture-voice-btn" data-scroll-yt-sec="lectures-realms-mount">📘 Written &amp; Voice Notes ↓</button>
           </div>
         </div>
 
-        <div id="yt200-en-section" style="display:${globalLectureLangMode === "ur" ? "none" : "block"};">
+        <div id="yt200-en-section" style="display:${globalLectureLangMode === "en" ? "block" : "none"};">
           <div class="lectures-level-divider">
             <h3>🇬🇧 English YouTube Trigonometry Video Library (${enFiltered.length} / 100 Videos)</h3>
             <span>Play Directly Inside Page or Open on YouTube</span>
@@ -3272,7 +3569,7 @@
           }
         </div>
 
-        <div id="yt200-ur-section" style="display:${globalLectureLangMode === "en" ? "none" : "block"};">
+        <div id="yt200-ur-section" style="display:${globalLectureLangMode === "ur" ? "block" : "none"};">
           <div class="lectures-level-divider">
             <h3>🇵🇰🇮🇳 Urdu &amp; Hindi YouTube Trigonometry Video Library (${urFiltered.length} / 100 Videos)</h3>
             <span dir="rtl" style="font-weight:700;">100 اردو اور ہندی یوٹیوب ویڈیو لیکچرز</span>
@@ -3283,9 +3580,42 @@
               : `<div class="callout callout-pitfall">No Urdu/Hindi YouTube videos matched your filter.</div>`
           }
         </div>
+
+        <div id="yt200-trick-section" style="display:${globalLectureLangMode === "trick" ? "block" : "none"};">
+          <div class="lectures-level-divider trick-divider">
+            <h3>⚡ Short Video Tricks — TikTok • Instagram Reels • YT Shorts (${tricksFiltered.length} / ${tricksDb.length} Tricks)</h3>
+            <span>60-Second Mental Hacks, Hand Tricks &amp; Exam Shortcuts</span>
+          </div>
+          <div class="trick-platform-bar" role="group" aria-label="Filter Short Tricks by Platform">
+            <button type="button" class="trick-platform-chip ${currentTrickPlatformFilter === "ALL" ? "active" : ""}" data-trick-plat="ALL">
+              🔥 All Tricks (${tricksBaseFiltered.length})
+            </button>
+            <button type="button" class="trick-platform-chip chip-tiktok ${currentTrickPlatformFilter === "tiktok" ? "active" : ""}" data-trick-plat="tiktok">
+              🎵 TikTok (${tiktokCount})
+            </button>
+            <button type="button" class="trick-platform-chip chip-insta ${currentTrickPlatformFilter === "insta" ? "active" : ""}" data-trick-plat="insta">
+              📸 Insta Reels (${instaCount})
+            </button>
+            <button type="button" class="trick-platform-chip chip-yt ${currentTrickPlatformFilter === "yt-short" ? "active" : ""}" data-trick-plat="yt-short">
+              ▶️ YT Shorts (${ytShortCount})
+            </button>
+          </div>
+          ${
+            tricksFiltered.length
+              ? `<div class="yt200-vault-grid trick-vault-grid">${tricksFiltered.map((v) => buildShortTrickCardHtml(v)).join("")}</div>`
+              : `<div class="callout callout-pitfall">No short video tricks matched your current filter. Try selecting "All Tricks" or clearing the search box!</div>`
+          }
+        </div>
       `;
 
       wireLectureControls(yt200Mount);
+      yt200Mount.querySelectorAll("[data-trick-plat]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          triggerHaptic(10);
+          currentTrickPlatformFilter = btn.dataset.trickPlat || "ALL";
+          renderLecturesTab();
+        });
+      });
       yt200Mount.querySelectorAll("[data-scroll-yt-sec]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const targetId = btn.dataset.scrollYtSec;
@@ -3294,6 +3624,12 @@
             syncAllLectureLanguageGrids();
           } else if (targetId === "yt200-ur-section") {
             globalLectureLangMode = "ur";
+            syncAllLectureLanguageGrids();
+          } else if (targetId === "yt200-trick-section") {
+            globalLectureLangMode = "trick";
+            syncAllLectureLanguageGrids();
+          } else if (targetId === "lectures-realms-mount" && globalLectureLangMode === "trick") {
+            globalLectureLangMode = "en";
             syncAllLectureLanguageGrids();
           }
           document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -3511,6 +3847,7 @@
         MODULES.map((m, idx) => `<option value="Ch ${idx + 1}">${m.title.replace(/^\d+\.\s*/, `Ch ${idx + 1}: `)}</option>`).join("");
     }
     updateProgressUI();
+    initVersesPortal();
     renderSidebar();
     renderRoadmapCards();
     renderRoadmapSummary();
@@ -3519,7 +3856,7 @@
     document.getElementById("theme-toggle-btn")?.addEventListener("click", toggleTheme);
     document.getElementById("brand-home")?.addEventListener("click", () => {
       triggerHaptic(10);
-      switchView("roadmap");
+      switchView("verses");
     });
     document.getElementById("mobile-back-btn")?.addEventListener("click", () => {
       triggerHaptic(10);
@@ -4089,30 +4426,38 @@
 
     // Hardware Android/iOS Back Button & History Navigation Support
     window.addEventListener("popstate", (e) => {
+      const verseModal = document.getElementById("verse-preview-modal");
+      if (verseModal && !verseModal.hidden) {
+        closeVersePreviewModal();
+        return;
+      }
       const battleModal = document.getElementById("rpg-battle-modal");
       if (battleModal && !battleModal.hidden) {
         closeBossRaid();
         return;
       }
-      const validViews = new Set(["roadmap", "lectures", "playground", "solver", "lesson", "vault", "summary"]);
+      const validViews = new Set(["verses", "arithmetic", "roadmap", "lectures", "playground", "solver", "lesson", "vault", "summary"]);
       const hashView = (window.location.hash || "").replace(/^#/, "");
-      const targetView = e.state?.view || (validViews.has(hashView) ? hashView : "roadmap");
+      const targetView = e.state?.view || (validViews.has(hashView) ? hashView : "verses");
       if (targetView === "lesson" && e.state?.mod && isModuleUnlocked(e.state.mod)) {
         currentModuleId = e.state.mod;
       }
-      switchView(validViews.has(targetView) ? targetView : "roadmap", false, true);
+      switchView(validViews.has(targetView) ? targetView : "verses", false, true);
     });
 
-    // PWA Home-Screen Shortcut / Initial Hash Deep-Link Support
+    // PWA Home-Screen Shortcut / Initial Hash Deep-Link Support (Default Start GUI = "verses")
     const initHash = (window.location.hash || "").replace(/^#/, "");
-    const launchableViews = new Set(["roadmap", "lectures", "playground", "solver", "vault", "summary"]);
-    if (launchableViews.has(initHash) && initHash !== "roadmap") {
+    const launchableViews = new Set(["verses", "arithmetic", "roadmap", "lectures", "playground", "solver", "vault", "summary"]);
+    if (launchableViews.has(initHash) && initHash !== "verses") {
       switchView(initHash, false, true);
-    } else if (window.history && typeof window.history.replaceState === "function") {
-      try {
-        window.history.replaceState({ view: "roadmap", mod: currentModuleId }, "", window.location.hash || "#roadmap");
-      } catch (_) {
-        /* ignore */
+    } else {
+      switchView("verses", false, true);
+      if (window.history && typeof window.history.replaceState === "function") {
+        try {
+          window.history.replaceState({ view: "verses", mod: currentModuleId }, "", "#verses");
+        } catch (_) {
+          /* ignore */
+        }
       }
     }
 

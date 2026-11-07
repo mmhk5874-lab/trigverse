@@ -1409,3 +1409,275 @@ window.TRIG_YOUTUBE_LIBRARY_200 = {
     }
   ]
 };
+
+
+// ============================================================================
+// SHORT VIDEO TRICKS LIBRARY — TikTok • Instagram Reels • YouTube Shorts
+// 24 Viral 60-Second Trigonometry Hacks & Mental Shortcuts (Playable Inline)
+// ============================================================================
+window.TRIG_SHORT_TRICKS = [
+  {
+    num: 1,
+    id: "28NMgU9WgCU",
+    platform: "tiktok",
+    tierId: "tier-1",
+    title: "5-Second Left-Hand Trick for Exact Trig Values (0° to 90°)",
+    channel: "Stacreus",
+    tip: "\\sin\\theta = \\frac{\\sqrt{\\text{fingers below}}}{2}, \\quad \\cos\\theta = \\frac{\\sqrt{\\text{fingers above}}}{2}",
+    tiktokQuery: "trigonometry hand trick exact values",
+    instaTag: "trigonometrytricks"
+  },
+  {
+    num: 2,
+    id: "2-yZjB5hL4g",
+    platform: "yt-short",
+    tierId: "tier-1",
+    title: "Radians ↔ Degrees Instant Mental Conversion Hack",
+    channel: "SUJATAMATHS",
+    tip: "\\pi\\text{ rad} = 180^\\circ \\implies \\frac{\\pi}{6}=30^\\circ,\\; \\frac{\\pi}{4}=45^\\circ,\\; \\frac{\\pi}{3}=60^\\circ",
+    tiktokQuery: "radians to degrees math trick",
+    instaTag: "mathtricks"
+  },
+  {
+    num: 3,
+    id: "tbP1D7HgR4g",
+    platform: "insta",
+    tierId: "tier-1",
+    title: "Fastest SOH-CAH-TOA Right-Triangle Side Finder",
+    channel: "easy physix",
+    tip: "\\sin=\\frac{O}{H},\\quad \\cos=\\frac{A}{H},\\quad \\tan=\\frac{O}{A}",
+    tiktokQuery: "soh cah toa fast trick",
+    instaTag: "mathreels"
+  },
+  {
+    num: 4,
+    id: "gYGxoK578S4",
+    platform: "tiktok",
+    tierId: "tier-1",
+    title: "Visual Sin, Cos & Tan Triangle Ratio Shortcut",
+    channel: "Educationmedico",
+    tip: "\\tan\\theta = \\frac{\\sin\\theta}{\\cos\\theta}, \\quad \\cot\\theta = \\frac{1}{\\tan\\theta}",
+    tiktokQuery: "sin cos tan visual shortcut",
+    instaTag: "trigonometry"
+  },
+  {
+    num: 5,
+    id: "bHQ3csQ6kSY",
+    platform: "insta",
+    tierId: "tier-2",
+    title: "Palm & Finger Trick — Never Memorize the Trig Table Again",
+    channel: "MathUnpacked",
+    tip: "\\tan\\theta = \\frac{\\sqrt{\\text{fingers below}}}{\\sqrt{\\text{fingers above}}}",
+    tiktokQuery: "palm finger trick trigonometry table",
+    instaTag: "mathhacks"
+  },
+  {
+    num: 6,
+    id: "U7o3PJX-_Gw",
+    platform: "yt-short",
+    tierId: "tier-2",
+    title: "0–1–2–3–4 Square-Root Table Hack in 15 Seconds",
+    channel: "invictaa NEET & JEE",
+    tip: "\\sin(0^\\circ,30^\\circ,45^\\circ,60^\\circ,90^\\circ) = \\sqrt{\\frac{0}{4}},\\sqrt{\\frac{1}{4}},\\sqrt{\\frac{2}{4}},\\sqrt{\\frac{3}{4}},\\sqrt{\\frac{4}{4}}",
+    tiktokQuery: "trigonometry table 15 second trick",
+    instaTag: "jeemaths"
+  },
+  {
+    num: 7,
+    id: "1tlZU7f36TU",
+    platform: "tiktok",
+    tierId: "tier-2",
+    title: "Viral sin, cos, tan Ratio Mnemonic Speed Trick",
+    channel: "GK & MATHS TRICK",
+    tip: "\\csc\\theta = \\frac{1}{\\sin\\theta},\\quad \\sec\\theta = \\frac{1}{\\cos\\theta},\\quad \\cot\\theta = \\frac{1}{\\tan\\theta}",
+    tiktokQuery: "sin cos tan speed math trick",
+    instaTag: "vedicmaths"
+  },
+  {
+    num: 8,
+    id: "0u6olv6_FeA",
+    platform: "insta",
+    tierId: "tier-2",
+    title: "Complementary Angle Cancel Trick (sin 72° = cos 18°)",
+    channel: "mathD AI",
+    tip: "A + B = 90^\\circ \\implies \\sin A = \\cos B \\;\\text{and}\\; \\tan A \\cdot \\tan B = 1",
+    tiktokQuery: "complementary angles trigonometry trick",
+    instaTag: "mathshorts"
+  },
+  {
+    num: 9,
+    id: "rsdVnqPSl5A",
+    platform: "yt-short",
+    tierId: "tier-3",
+    title: "Super Hexagon Trick — Unlock 24 Trig Formulas from 1 Shape",
+    channel: "NALM Easy Maths",
+    tip: "\\sin^2\\theta + \\cos^2\\theta = 1,\\quad 1 + \\tan^2\\theta = \\sec^2\\theta,\\quad 1 + \\cot^2\\theta = \\csc^2\\theta",
+    tiktokQuery: "super hexagon trigonometry trick",
+    instaTag: "trigonometryformulas"
+  },
+  {
+    num: 10,
+    id: "M4e8TPqQlkI",
+    platform: "insta",
+    tierId: "tier-3",
+    title: "Magic Hexagon Clockwise & Diagonal Identity Hack",
+    channel: "Maths is Easy",
+    tip: "\\text{Any vertex} = \\frac{\\text{next clockwise}}{\\text{second clockwise}}",
+    tiktokQuery: "magic hexagon trig identities",
+    instaTag: "mathsiseasy"
+  },
+  {
+    num: 11,
+    id: "7Y3B8g0R5CQ",
+    platform: "tiktok",
+    tierId: "tier-3",
+    title: "1 Trick = All Pythagorean Trig Identities in Seconds",
+    channel: "HI TECH ACADEMY",
+    tip: "\\sec^2\\theta - \\tan^2\\theta = 1 \\implies (\\sec\\theta - \\tan\\theta) = \\frac{1}{\\sec\\theta + \\tan\\theta}",
+    tiktokQuery: "pythagorean identities math trick",
+    instaTag: "mathtips"
+  },
+  {
+    num: 12,
+    id: "_8DAG24fIMU",
+    platform: "yt-short",
+    tierId: "tier-3",
+    title: "Value-Substitution Shortcut for Tough Identity MCQs",
+    channel: "Bright Maths",
+    tip: "\\text{Put } \\theta = 45^\\circ \\text{ or } 30^\\circ \\text{ to eliminate MCQ options instantly!}",
+    tiktokQuery: "trigonometry mcq value putting trick",
+    instaTag: "competitiveexams"
+  },
+  {
+    num: 13,
+    id: "sfjD0_cTCnk",
+    platform: "tiktok",
+    tierId: "tier-3",
+    title: "5-Second Height & Distance Ratio Trick (30°–60°–90°)",
+    channel: "Defence Wallah",
+    tip: "30^\\circ : 60^\\circ : 90^\\circ \\iff 1 : \\sqrt{3} : 2,\\qquad 45^\\circ : 45^\\circ : 90^\\circ \\iff 1 : 1 : \\sqrt{2}",
+    tiktokQuery: "height and distance 5 second trick",
+    instaTag: "ndamaths"
+  },
+  {
+    num: 14,
+    id: "h53d7Om1pQk",
+    platform: "tiktok",
+    tierId: "tier-4",
+    title: "Unit Circle Coordinates Hand Trick (cos θ, sin θ)",
+    channel: "MathTonics",
+    tip: "P(\\theta) = (\\cos\\theta,\\; \\sin\\theta) = \\left(\\frac{\\sqrt{\\text{top}}}{2},\\; \\frac{\\sqrt{\\text{bottom}}}{2}\\right)",
+    tiktokQuery: "unit circle hand trick tiktok",
+    instaTag: "unitcircle"
+  },
+  {
+    num: 15,
+    id: "x4BmTgUbSak",
+    platform: "insta",
+    tierId: "tier-4",
+    title: "Master All Unit Circle Special Angles in 10 Seconds",
+    channel: "Math4Champs",
+    tip: "\\text{Denominators: } \\frac{\\pi}{6}\\to 6,\\; \\frac{\\pi}{4}\\to 4,\\; \\frac{\\pi}{3}\\to 3 \\text{ mirror across quadrants}",
+    tiktokQuery: "unit circle in 10 seconds",
+    instaTag: "precalculus"
+  },
+  {
+    num: 16,
+    id: "O3bY_YWBdlg",
+    platform: "yt-short",
+    tierId: "tier-4",
+    title: "ASTC Quadrant Rule Hack — All Silver Tea Cups",
+    channel: "Maths is Easy",
+    tip: "\\text{Q1: All }+ \\;|\\; \\text{Q2: }\\sin,\\csc + \\;|\\; \\text{Q3: }\\tan,\\cot + \\;|\\; \\text{Q4: }\\cos,\\sec +",
+    tiktokQuery: "astc quadrant rule trigonometry",
+    instaTag: "class11maths"
+  },
+  {
+    num: 17,
+    id: "ScCI9Hp972A",
+    platform: "yt-short",
+    tierId: "tier-4",
+    title: "90°±θ vs 180°±θ Co-Ratio Flip Rule in 30 Seconds",
+    channel: "Mohit Tyagi",
+    tip: "90^\\circ,270^\\circ \\implies \\text{flip }(\\sin\\leftrightarrow\\cos); \\quad 180^\\circ,360^\\circ \\implies \\text{keep ratio}",
+    tiktokQuery: "allied angles trigonometry trick",
+    instaTag: "iitjeemaths"
+  },
+  {
+    num: 18,
+    id: "6reJ5CV2WGA",
+    platform: "yt-short",
+    tierId: "tier-5",
+    title: "Compound Angle sin(A±B) & cos(A±B) Rhythm Trick",
+    channel: "NCERT Wallah",
+    tip: "\\sin(A\\pm B)=\\sin A\\cos B\\pm\\cos A\\sin B,\\quad \\cos(A\\pm B)=\\cos A\\cos B\\mp\\sin A\\sin B",
+    tiktokQuery: "compound angle formula memory trick",
+    instaTag: "ncertmaths"
+  },
+  {
+    num: 19,
+    id: "g4hdqebsF2k",
+    platform: "insta",
+    tierId: "tier-5",
+    title: "Double-Angle sin 2x, cos 2x & tan 2x Instant Recall",
+    channel: "Arpit Academy",
+    tip: "\\sin 2x = \\frac{2\\tan x}{1+\\tan^2 x},\\quad \\cos 2x = \\frac{1-\\tan^2 x}{1+\\tan^2 x},\\quad \\tan 2x = \\frac{2\\tan x}{1-\\tan^2 x}",
+    tiktokQuery: "sin 2x cos 2x tan 2x formula trick",
+    instaTag: "mathformulas"
+  },
+  {
+    num: 20,
+    id: "DgJej9UU7_0",
+    platform: "tiktok",
+    tierId: "tier-5",
+    title: "C-D Sum-to-Product Formula Memory Hack (2SC, 2CS, 2CC)",
+    channel: "D-P-S Clips",
+    tip: "S+S=2SC,\\quad S-S=2CS,\\quad C+C=2CC,\\quad C-C=-2SS",
+    tiktokQuery: "sum to product trigonometry trick",
+    instaTag: "studygrammaths"
+  },
+  {
+    num: 21,
+    id: "ILzt37AD6-s",
+    platform: "tiktok",
+    tierId: "tier-6",
+    title: "Inverse Trig Bomb Trick — Principal Value & Cancellation",
+    channel: "@MathTricksWith Miss Maths",
+    tip: "\\sin^{-1}x + \\cos^{-1}x = \\frac{\\pi}{2},\\quad \\tan^{-1}x + \\cot^{-1}x = \\frac{\\pi}{2}",
+    tiktokQuery: "inverse trigonometry short trick",
+    instaTag: "class12maths"
+  },
+  {
+    num: 22,
+    id: "Yzs1NecYPPw",
+    platform: "insta",
+    tierId: "tier-6",
+    title: "Derivatives of All 6 Inverse Trig Functions Sign Hack",
+    channel: "Enjoy Math",
+    tip: "\\text{Starts with 'C' }(\\cos^{-1},\\cot^{-1},\\csc^{-1}) \\implies \\text{Negative derivative }(-)",
+    tiktokQuery: "derivatives of inverse trig functions trick",
+    instaTag: "calculustricks"
+  },
+  {
+    num: 23,
+    id: "HlTWaGnx2as",
+    platform: "yt-short",
+    tierId: "tier-7",
+    title: "Two-Angle Elevation Tower Shortcut (d = h(cot α − cot β))",
+    channel: "Deepa Coaching Classes",
+    tip: "h = \\frac{d}{\\cot\\alpha - \\cot\\beta} \\quad (\\alpha < \\beta)",
+    tiktokQuery: "angle of elevation tower shortcut",
+    instaTag: "sscmaths"
+  },
+  {
+    num: 24,
+    id: "MzeqXpjNYmA",
+    platform: "insta",
+    tierId: "tier-7",
+    title: "Master Exam Strategy — Solve Any Trigonometry Problem Fast",
+    channel: "BHANNAT MATHS",
+    tip: "e^{i\\theta} = \\cos\\theta + i\\sin\\theta \\implies (\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)",
+    tiktokQuery: "how to master trigonometry fast",
+    instaTag: "mathlover"
+  }
+];

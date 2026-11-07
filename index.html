@@ -7,12 +7,12 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="TrigVerse" />
+  <meta name="apple-mobile-web-app-title" content="MathsVerse" />
   <meta name="format-detection" content="telephone=no" />
-  <title>TrigVerse — Complete Interactive Trigonometry Quest</title>
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="apple-touch-icon" href="logo.png" />
-  <link rel="manifest" href="manifest.json" />
+  <title>MathsVerse — Easy &amp; Friendly</title>
+  <link rel="icon" type="image/png" href="favicon.png?v=44" />
+  <link rel="apple-touch-icon" href="logo.png?v=44" />
+  <link rel="manifest" href="manifest.json?v=44" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -24,9 +24,9 @@
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
-  <link rel="stylesheet" href="styles.css?v=41" />
+  <link rel="stylesheet" href="styles.css?v=53" />
 </head>
-<body>
+<body class="on-verses-portal">
   <!-- ====================================================================
         Luminous Orange Background + Live Floating Mathematics Display
        ==================================================================== -->
@@ -73,28 +73,20 @@
       <button type="button" class="mobile-back-chip" id="mobile-back-btn" hidden aria-label="Back to Quest Roadmap">← Map</button>
       <div class="brand" id="brand-home">
         <div class="brand-logo-wrap">
-          <img src="logo.png" alt="TrigVerse Crest Logo" class="brand-logo-img" />
+          <img src="logo.png?v=44" alt="MathsVerse Logo" class="brand-logo-img" />
         </div>
         <div class="brand-text-col">
-          <span class="brand-title trigverse-aura">TrigVerse</span>
-          <span class="brand-subtitle">Foundations → Advanced Trigonometry</span>
+          <span class="brand-title trigverse-aura" id="brand-title-text">MathsVerse</span>
+          <span class="brand-subtitle" id="brand-subtitle-text">Easy &amp; Friendly</span>
         </div>
       </div>
     </div>
-
-    <nav class="nav-tabs" aria-label="Primary Sections">
-      <button class="nav-tab active" data-view="roadmap">🗺️ Quest Roadmap</button>
-      <button class="nav-tab" data-view="vault">📜 Formulas</button>
-      <button class="nav-tab" data-view="lectures">🎓 Lectures (EN / اردو)</button>
-      <button class="nav-tab" data-view="playground">🔬 Interactive Labs (14)</button>
-      <button class="nav-tab" data-view="solver">📐 Calculator &amp; Solver</button>
-    </nav>
 
     <div class="topbar-right">
       <div class="mobile-topbar-stats" id="mobile-topbar-stats" aria-label="Player Quick Stats">
         <span class="mobile-stat-chip" title="Current Chapter Level">🛡️ <b id="mob-hud-level">Lv. 1</b></span>
       </div>
-      <button type="button" class="pwa-install-chip" id="pwa-install-btn" hidden title="Install TrigVerse Mobile App">📲 App</button>
+      <button type="button" class="pwa-install-chip" id="pwa-install-btn" hidden title="Install MathsVerse Mobile App">📲 App</button>
       <div class="progress-pill" title="Your saved mastery progress" hidden aria-hidden="true">
         <span id="progress-text">0/44 Mastered (0%)</span>
         <div class="progress-bar-mini">
@@ -121,21 +113,208 @@
     <!-- Main Dynamic Viewport -->
     <main class="main-content">
 
+      <!-- VIEW 0: MATHSVERSE (EASY & FRIENDLY) COSMIC CATEGORY HUB -->
+      <section class="view-panel active" id="view-verses">
+        <div class="mv-cosmic-stage">
+          <!-- Cosmic Header Banner -->
+          <div class="mv-cosmic-banner">
+            <span class="mv-floating-sym mv-sym-pyth" aria-hidden="true">a² + b² = c²</span>
+            <span class="mv-floating-sym mv-sym-pi" aria-hidden="true">π</span>
+            <span class="mv-floating-sym mv-sym-tri" aria-hidden="true">△</span>
+            <svg class="mv-floating-infinity" viewBox="0 0 120 56" fill="none" aria-hidden="true">
+              <defs>
+                <linearGradient id="mv-inf-grad" x1="10" y1="28" x2="110" y2="28" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#60a5fa"/>
+                  <stop offset="50%" stop-color="#c084fc"/>
+                  <stop offset="100%" stop-color="#f472b6"/>
+                </linearGradient>
+              </defs>
+              <path d="M34 14C20 14 12 22 12 28C12 34 20 42 34 42C47 42 54 28 60 28C66 28 73 14 86 14C100 14 108 22 108 28C108 34 100 42 86 42C73 42 66 28 60 28C54 28 47 14 34 14Z" stroke="url(#mv-inf-grad)" stroke-width="5.5" stroke-linecap="round"/>
+            </svg>
+
+            <div class="mv-mascot-col">
+              <button type="button" class="mv-mascot-btn" id="mv-mascot-trigger" title="Chat with Mr.mmhk — Your Personal Owl Guide!">
+                <div class="mv-mascot-halo">
+                  <img src="logo.png?v=44" alt="Mr.mmhk — MathsVerse Owl Guide" class="mv-mascot-img" />
+                </div>
+                <span class="mv-mascot-nameplate" id="mv-mascot-emo-pill">🤩 Mr.mmhk</span>
+              </button>
+            </div>
+
+            <div class="mv-brand-col">
+              <div class="mv-arc-glow" aria-hidden="true"></div>
+              <h1 class="mv-logo-heading" aria-label="MathsVerse">
+                <span class="mv-word-maths">Maths</span><span class="mv-word-verse">Verse</span>
+              </h1>
+              <div class="mv-tagline-pill">
+                <span class="mv-star" aria-hidden="true">⭐</span>
+                <span class="mv-tagline-text">Easy &amp; Friendly</span>
+                <span class="mv-star" aria-hidden="true">⭐</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mr.mmhk Live Multi-Emotion Owl Guide Banner -->
+          <div class="mrmmhk-portal-guide" id="mrmmhk-portal-guide"></div>
+
+          <!-- 4×3 Neon Cosmic Category Grid (12 Verses) -->
+          <div class="mv-cosmic-grid" id="verses-grid"></div>
+        </div>
+
+        <!-- Interactive Verse Preview Modal -->
+        <div class="verse-modal-backdrop" id="verse-preview-modal" hidden>
+          <div class="verse-modal-card" role="dialog" aria-modal="true" aria-labelledby="verse-modal-title">
+            <div class="verse-modal-topbar">
+              <span class="verse-modal-cat" id="verse-modal-cat">Mathematics Domain</span>
+              <button type="button" class="verse-modal-close" id="btn-close-verse-modal" aria-label="Close Verse Preview">✕ Close</button>
+            </div>
+            <div class="verse-modal-body" id="verse-modal-body"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARITHMETIC SUB-GROUPS BAR (Visible ONLY inside Arithmetic — Pink Theme) -->
+      <div class="trig-subgroups-shell arith-subgroups-shell" id="arith-subgroups-bar" hidden>
+        <div class="trig-subgroups-head">
+          <button type="button" class="trig-back-verses-btn" data-arith-back-verses="1" title="Back to all 12 MathsVerse Categories">
+            ← MathsVerse
+          </button>
+          <span class="trig-subgroups-badge">🧮 Arithmetic</span>
+        </div>
+        <nav class="nav-tabs trig-subgroups-tabs" aria-label="Arithmetic Sub-Groups">
+          <button type="button" class="nav-tab active" data-arith-tab="roadmap">🗺️ Quest Roadmap</button>
+          <button type="button" class="nav-tab" data-arith-tab="vault">📜 Formulas (36 Ch)</button>
+          <button type="button" class="nav-tab" data-arith-tab="solver">🧮 Lab &amp; Solver</button>
+        </nav>
+      </div>
+
+      <!-- VIEW ARITHMETIC: PINK WINDING QUEST ROADMAP (BEGINNING -> HIGHEST OLYMPIAD LEVEL) -->
+      <section class="view-panel" id="view-arithmetic">
+        <!-- Subpanel 1: Pink Quest Roadmap -->
+        <div class="arith-subpanel" id="arith-panel-roadmap">
+          <div class="hero-banner arith-hero-banner">
+            <div>
+              <span class="hero-eyebrow">💖 Beginning to Highest Olympiad Level • Pink Quest Adventure</span>
+              <div class="hero-aura-heading">
+                <span class="trigverse-aura hero-trigverse-display arith-pink-aura">Arithmetic</span>
+              </div>
+              <p style="margin:0.45rem 0 0;color:var(--text-secondary);max-width:560px;font-size:0.92rem;">
+                Journey step-by-step from <strong>Counting &amp; Place Value (Ch 1)</strong> through <strong>Primes, Fractions, Ratios, Percentages, Surds &amp; Bases</strong> up to <strong>Olympiad Continued Fractions &amp; Telescoping Series (Ch 36)</strong>!
+              </p>
+            </div>
+
+            <div class="hero-crest-panel">
+              <div class="hero-logo-orb">
+                <img src="logo.png?v=44" alt="Arithmetic Official Emblem" class="hero-logo-img" />
+              </div>
+              <div class="trigverse-aura hero-emblem-caption arith-pink-aura">Arithmetic</div>
+              <div class="hero-stats">
+                <div class="stat-card">
+                  <div class="stat-value">7</div>
+                  <div class="stat-label">Pink Realms</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">36</div>
+                  <div class="stat-label">Chapters (1→Max)</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">540</div>
+                  <div class="stat-label">Boss MCQs</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="arith-stat-completed">0/36</div>
+                  <div class="stat-label">Chapters Mastered</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7-Realm Teleport Minimap -->
+          <div class="rpg-world-minimap" id="arith-world-minimap"></div>
+
+          <!-- Pink Winding S-Curve Game Board Path -->
+          <div class="duo-quest-wrapper">
+            <div class="duo-hud-bar">
+              <div class="duo-hud-items">
+                <div class="duo-hud-chip" title="Current Arithmetic Level">
+                  <span class="duo-hud-icon">💖</span>
+                  <span id="arith-hud-level">Lv. 1</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="duo-path-arena" id="arith-path-arena"></div>
+
+            <button class="duo-jump-fab" id="arith-jump-active" title="Teleport to Active Pink Stone">🎯</button>
+          </div>
+        </div>
+
+        <!-- Subpanel 2: Active Arithmetic Lesson -->
+        <div class="arith-subpanel" id="arith-panel-lesson" hidden>
+          <div id="arith-lesson-mount"></div>
+        </div>
+
+        <!-- Subpanel 3: Complete Beginning-to-Olympiad Formula Vault -->
+        <div class="arith-subpanel" id="arith-panel-vault" hidden>
+          <div class="section-card">
+            <span class="hero-eyebrow">📜 Complete Arithmetic Formula Vault • Ch 1 → Ch 36</span>
+            <h2 style="margin:0.25rem 0 0.5rem;">Beginning-to-Olympiad Arithmetic Formulas</h2>
+            <div class="formula-filter-bar" style="margin-bottom:1rem;">
+              <input type="text" id="arith-vault-search" placeholder="Search place value, GCD, fractions, percentage, surds, binary, telescoping..." />
+              <div class="lab-selector-bar" id="arith-vault-pills" style="margin-bottom:0;"></div>
+            </div>
+            <div id="arith-vault-mount"></div>
+          </div>
+        </div>
+
+        <!-- Subpanel 4: Interactive Arithmetic Lab & Solver -->
+        <div class="arith-subpanel" id="arith-panel-solver" hidden>
+          <div class="section-card" style="margin-bottom:1rem;">
+            <span class="hero-eyebrow">🧮 Live Arithmetic Calculators &amp; Number Labs</span>
+            <h2 style="margin:0.25rem 0 0.3rem;">Prime Factorizer, GCD/LCM, Base-$b$ &amp; Finance Solver</h2>
+            <p style="margin:0;color:var(--text-secondary);">Type any numbers below to compute prime powers, total divisors $\tau(N)$, simplified fractions, binary/hex bases, and compound interest live!</p>
+          </div>
+          <div id="arith-solver-mount"></div>
+        </div>
+
+        <!-- Playable 15-MCQ Pink Guardian Boss Battle Modal -->
+        <div class="rpg-modal-backdrop" id="arith-raid-modal" hidden>
+          <div class="rpg-battle-arena" id="arith-raid-card" role="dialog" aria-modal="true" aria-label="Arithmetic Guardian Challenge"></div>
+        </div>
+      </section>
+
+      <!-- TRIGONOMETRY SUB-GROUPS BAR (Visible ONLY inside Trigonometry) -->
+      <div class="trig-subgroups-shell" id="trig-subgroups-bar" hidden>
+        <div class="trig-subgroups-head">
+          <button type="button" class="trig-back-verses-btn" id="btn-trig-back-verses" title="Back to all 12 MathsVerse Categories">
+            ← MathsVerse
+          </button>
+          <span class="trig-subgroups-badge">📐 Trigonometry</span>
+        </div>
+        <nav class="nav-tabs trig-subgroups-tabs" aria-label="Trigonometry Sub-Groups">
+          <button type="button" class="nav-tab active" data-view="roadmap">🗺️ Quest Roadmap</button>
+          <button type="button" class="nav-tab" data-view="vault">📜 Formulas</button>
+          <button type="button" class="nav-tab" data-view="lectures">🎓 Lectures (EN / اردو)</button>
+          <button type="button" class="nav-tab" data-view="playground">🔬 Interactive Labs (14)</button>
+          <button type="button" class="nav-tab" data-view="solver">📐 Calculator &amp; Solver</button>
+        </nav>
+      </div>
+
       <!-- VIEW 1: ROADMAP OVERVIEW -->
-      <section class="view-panel active" id="view-roadmap">
+      <section class="view-panel" id="view-roadmap">
         <div class="hero-banner">
           <div>
             <span class="hero-eyebrow">Interactive Trigonometry Adventure &amp; Curriculum</span>
             <div class="hero-aura-heading">
-              <span class="trigverse-aura hero-trigverse-display">TrigVerse</span>
+              <span class="trigverse-aura hero-trigverse-display">Trigonometry</span>
             </div>
           </div>
 
           <div class="hero-crest-panel">
             <div class="hero-logo-orb">
-              <img src="logo.png" alt="TrigVerse Official Emblem" class="hero-logo-img" />
+              <img src="logo.png?v=44" alt="Trigonometry Official Emblem" class="hero-logo-img" />
             </div>
-            <div class="trigverse-aura hero-emblem-caption">TrigVerse</div>
+            <div class="trigverse-aura hero-emblem-caption">Trigonometry</div>
             <div class="hero-stats">
               <div class="stat-card">
                 <div class="stat-value">7</div>
@@ -592,10 +771,10 @@
         <div class="section-card">
           <div class="master-summary-hero" style="margin-bottom:1.15rem;">
             <div class="master-summary-title-row">
-              <img src="logo.png" alt="TrigVerse Summit Crest" class="master-summary-crest" />
+              <img src="logo.png?v=44" alt="Trigonometry Summit Crest" class="master-summary-crest" />
               <div>
                 <span class="quick-syllabus-badge">🏆 Complete 4-Stage Trigonometry Synthesis</span>
-                <h2 style="margin:0.35rem 0 0.2rem;"><span class="trigverse-aura">TrigVerse</span> Master Summary (All 41 Numbered Syllabus Pillars)</h2>
+                <h2 style="margin:0.35rem 0 0.2rem;"><span class="trigverse-aura">Trigonometry</span> Master Summary (All 41 Numbered Syllabus Pillars)</h2>
                 <p style="margin:0;color:var(--text-secondary);font-size:0.92rem;">
                   Filter by syllabus stage or search any topic, formula, or exam rule—and jump straight into any chapter with one click:
                 </p>
@@ -624,16 +803,17 @@
         <div class="section-card">
           <div class="lectures-hero-head">
             <div>
-              <span class="hero-eyebrow">🎓▶️ 200 YouTube Video Lecture Library • 100 English + 100 Urdu &amp; Hindi</span>
-              <h2 style="margin:0.2rem 0 0.35rem;">100 English + 100 Urdu &amp; Hindi YouTube Lectures &amp; Bilingual Notes</h2>
+              <span class="hero-eyebrow">🎓▶️ 200 YouTube Lectures • 100 English + 100 Urdu/Hindi • ⚡ Short Video Tricks</span>
+              <h2 style="margin:0.2rem 0 0.35rem;">100 English + 100 Urdu &amp; Hindi Lectures &amp; Short Video Tricks</h2>
               <p style="margin:0;color:var(--text-secondary);">
                 Explore <strong>200 curated YouTube Trigonometry Video Lectures</strong>—<strong>100 in English</strong> and <strong>100 in Urdu + Hindi</strong>—playable directly inside the page or on YouTube, plus complete Chalkboard derivations and Voice Narration across all 7 Levels!
               </p>
             </div>
             <div class="lecture-global-controls">
-              <div class="lecture-lang-bar" id="lecture-hub-lang-bar" role="group" aria-label="Lecture Language Display">
+              <div class="lecture-lang-bar" id="lecture-hub-lang-bar" role="group" aria-label="Lecture Category Display">
                 <button type="button" class="lecture-lang-pill active" data-lang-mode="en">🇬🇧 100 English Videos</button>
                 <button type="button" class="lecture-lang-pill" data-lang-mode="ur">🇵🇰🇮🇳 100 Urdu + Hindi</button>
+                <button type="button" class="lecture-lang-pill lecture-trick-pill" data-lang-mode="trick">⚡ Trick</button>
               </div>
               <div class="lecture-audio-bar">
                 <label for="lecture-voice-rate" style="font-size:0.78rem;font-weight:700;color:var(--text-secondary);">🔊 Speed:</label>
@@ -671,6 +851,20 @@
     </main>
   </div>
 
+  <!-- 🦉 MR.MMHK MULTI-EMOTION OWL GUIDE MODAL + FLOATING COMPANION -->
+  <div class="mrmmhk-modal-backdrop" id="mrmmhk-wizard-modal" hidden>
+    <div class="mrmmhk-modal-card" id="mrmmhk-modal-inner" role="dialog" aria-modal="true" aria-label="Mr.mmhk Personal Owl Guide"></div>
+  </div>
+
+  <div class="mrmmhk-floating-dock" id="mrmmhk-floating-dock">
+    <div class="mrmmhk-floating-popover" id="mrmmhk-floating-popover" hidden></div>
+    <button type="button" class="mrmmhk-fab-btn" id="mrmmhk-fab-btn" title="Ask Mr.mmhk — Your Owl Guide">
+      <img src="logo.png?v=44" alt="Mr.mmhk" class="mrmmhk-fab-img" />
+      <span class="mrmmhk-fab-label">Mr.mmhk</span>
+      <span class="mrmmhk-fab-emo" id="mrmmhk-fab-emo">🤩</span>
+    </button>
+  </div>
+
   <!-- Quick Return-to-Top Pill on Mobile Long Scrolls -->
   <button type="button" class="mobile-scroll-top-btn" id="mobile-scroll-top-btn" hidden aria-label="Scroll back to top">↑ Top</button>
 
@@ -700,6 +894,26 @@
     </button>
   </nav>
 
+  <!-- Mobile Bottom Nav for Arithmetic (Pink Theme) -->
+  <nav class="mobile-bottom-nav arith-mobile-nav" id="arith-mobile-bottom-nav" aria-label="Arithmetic Mobile Navigation">
+    <button type="button" class="mobile-nav-btn active" data-arith-tab="roadmap">
+      <span class="mobile-nav-icon" aria-hidden="true">🗺️</span>
+      <span class="mobile-nav-label">Quest</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-arith-tab="vault">
+      <span class="mobile-nav-icon" aria-hidden="true">📜</span>
+      <span class="mobile-nav-label">Formulas</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-arith-tab="solver">
+      <span class="mobile-nav-icon" aria-hidden="true">🧮</span>
+      <span class="mobile-nav-label">Solver</span>
+    </button>
+    <button type="button" class="mobile-nav-btn" data-arith-back-verses="1">
+      <span class="mobile-nav-icon" aria-hidden="true">🌌</span>
+      <span class="mobile-nav-label">Verses</span>
+    </button>
+  </nav>
+
   <!-- Application Scripts (defer preserves execution order right after KaTeX defer scripts!) -->
   <script defer src="curriculum-ch1-5.js?v=41"></script>
   <script defer src="curriculum-ch6-10.js?v=41"></script>
@@ -711,11 +925,15 @@
   <script defer src="formulas-complete.js?v=41"></script>
   <script defer src="curriculum-master-summary.js?v=41"></script>
   <script defer src="lectures-bilingual.js?v=41"></script>
-  <script defer src="youtube-200-library.js?v=41"></script>
+  <script defer src="youtube-200-library.js?v=50"></script>
   <script defer src="visualizers.js?v=41"></script>
   <script defer src="mcq-generator.js?v=41"></script>
   <script defer src="scientific-calculator.js?v=41"></script>
   <script defer src="scientific-stopwatch.js?v=41"></script>
-  <script defer src="app.js?v=41"></script>
+  <script defer src="verses-portal.js?v=53"></script>
+  <script defer src="arithmetic-curriculum.js?v=53"></script>
+  <script defer src="arithmetic-quest.js?v=53"></script>
+  <script defer src="app.js?v=53"></script>
+  <script defer src="owl-guide.js?v=51"></script>
 </body>
 </html>
